@@ -1,0 +1,30 @@
+{
+  "name": "project-tech",
+  "version": "1.0.0",
+  "description": "This is a project for blockTech",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcoFijan/projectTech.git"
+  },
+  "keywords": [
+    "project",
+    "tech",
+    "projectTech"
+  ],
+  "author": "Marco Fijan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcoFijan/projectTech/issues"
+  },
+  "homepage": "https://github.com/marcoFijan/projectTech#readme",
+  "dependencies": {
+    "camelcase": "^6.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
