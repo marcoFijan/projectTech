@@ -1,0 +1,75 @@
+h1, h2, h3, h4, button{
+  font-family: 'Roboto', sans-serif;
+}
+
+#homepage{
+  background: #F02D3A;
+}
+
+#homepage>header{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* grid-template-columns: repeat(auto-fit, minmax(50%, 1fr)); */
+  /* grid-template-columns: 50% 50% 100%;
+  grid-auto-flow: column; */
+
+}
+
+#homepage>header>img{
+  /* width: 20%; */
+  min-width: 5em;
+  max-width: 9em;
+}
+
+#homepage>header>div{
+  width: 100%;
+  text-align: center;
+  color: white;
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+#homepage>header h2{
+  padding: 0;
+  margin: 0;
+}
+
+.loginButton, button{
+  background: #f09a3c;
+  color: white;
+  border: none;
+}
+
+.nextStep{
+  width: 10em;
+  height: 2em;
+  font-size: 1.1em;
+  margin: 1.5em 0;
+}
+
+.loginButton{
+  width: 6em;
+  height: 2em;
+  justify-self: end;
+}
+
+#homepage main>section{
+  background: black;
+  color: white;
+  padding: 1em;
+  margin: 2em auto;
+  width: 50%;
+  min-height: 20em;
+  max-width: 30em;
+  text-align: center;
+}
+
+.backgroundImage{
+  position: absolute;
+  width: 40%;
+  max-width: 27em;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
