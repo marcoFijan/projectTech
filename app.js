@@ -2,6 +2,15 @@
 // let answer = eft("ik-mis-de-efteling")
 // console.log(answer);
 
+// code without express
+// var http = require("http");
+// http.createServer(onrequest).listen(8000);
+// function onrequest(req, res){
+//   res.statusCode=200
+//   res.setHeader("Content-Type", "text/html")
+//   res.end("Hello World!\n")
+// }
+
 const express = require("express");
 const app = express();
 
@@ -19,6 +28,14 @@ app.get("/", function(req, res){
 app.get("/register", function(req, res){
   res.send("Dit is de registreerpagina");
 });
+
+// do something at specific routes
+if (req.url === '/about'){
+  res.end("this is my website\n");
+}
+else{
+  res.end('Hello World!\n')
+}
 
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
 app.get("/profile/:id", function(req, res){

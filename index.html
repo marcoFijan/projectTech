@@ -4,34 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="static/style/style.css">
   <title>Geed Matching: De datingsite voor geeks!</title>
 </head>
 <body id="homepage">
   <header>
-    <img src="static/images/logo.svg">
-    <button class="loginButton">Log in</button>
-    <div class="headers">
-      <h1>Welkom bij geek matching</h1>
-      <h2>Dé datingsite voor geeks!</h2>
-    </div>
+    <a href="index.html"><img src="static/images/logo.svg"></a>
+    <nav>
+      <ul>
+        <li><a href="#"><img src="static/images/friendsIcon.svg">Zoek profielen</a></li>
+        <li><a href="#"><img src="static/images/matchingGameIcon.svg">Matching Game</a></li>
+        <li><a href="#"><img src="static/images/matchesIcon.svg">Matches</a></li>
+        <li><a href="#"><img src="static/images/messagesIcon.svg">Berichten</a></li>
+      </ul>
+    </nav>
   </header>
+  <aside>
+    <div>
+      <div>
+        <img class="profileImage" src="static/images/marco.jpg">
+        <div>
+          <p class="profileName">Marco</p>
+          <p class="onlineStatus">Online</p>
+        </div>
+      </div>
+      <ul>
+        <li><a href="#">Profiel bewerken</a></li>
+        <li><a href="#">Mijn interesses en hobby's</a></li>
+        <li><a href="#">PREMIUM+</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Chatten</h2>
+      <ul>
+        <li>chat1</li>
+        <li>chat2</li>
+        <li>chat3</li>
+      </ul>
+    </div>
+  </aside>
   <main>
-    <section>
-      <h3>Waar ben je naar opzoek</h3>
+    <!-- sidebar -->
+    <!-- content -->
       <section>
-        <input type="checkbox" name="checkbox" id="genderMale" value="value">
-        <label for="genderMale">Man</label>
-        <input type="checkbox" name="checkbox" id="genderFemale" value="value">
-        <label for="genderFemale">Vrouw</label>
+        <h1>Mede Nintendo fans</h1>
+        <ul>
+          <li><a href="profile.html"><img src="static/images/profileImage.svg"></a></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+        </ul>
       </section>
-      <button class="nextStep">Volgende stap</button>
-    </section>
+      <section>
+        <h1>Mede One Punch Man fans</h1>
+        <ul>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+        </ul>
+      </section>
+      <section>
+        <h1>Mede Harry Potter fans</h1>
+        <ul>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+          <li><img src="static/images/profileImage.svg"></li>
+        </ul>
+      </section>
   </main>
   <footer>
 
   </footer>
-  <img src="static/images/waluigi.png" alt="background image" class="backgroundImage">
 </body>
 </html>
