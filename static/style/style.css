@@ -29,12 +29,15 @@ h1, h2, h3, h4, button{
 }
 
 h1{
+  background: #634193;
   background: var(--mainColor);
+  color: white;
   color: var(--h1Color);
   padding: .4em;
 }
 
 h2{
+  color: #634193;
   color: var(--mainColor);
   margin: 1em 0 .5em 0;
 }
@@ -44,7 +47,9 @@ p, nav a{
 }
 
 body{
+  background: #e6e4ed;
   background: var(--bgColor);
+  max-width: 75em;
   max-width: var(--wrapper);
   margin: 0 auto;
   /* padding: 0 1em; */
@@ -57,6 +62,7 @@ header{
   /* display: grid;
   grid-template-columns: 1fr 4fr; */
   width: 100%;
+  max-width: 75em;
   max-width: var(--wrapper);
   margin-right: 1em;
 }
@@ -71,6 +77,7 @@ header>a{
 }
 
 header>a img{
+  width: 19em;
   width: var(--asideMinWidth);
   padding: 0 4em;
   box-sizing: border-box;
@@ -112,8 +119,7 @@ nav ul img{
 
 /* main */
 main{
-  padding: 0;
-  margin:0;
+
   /* display: grid;
   grid-template-columns: 1fr 4fr; */
 }
@@ -124,12 +130,16 @@ main{
 } */
 
 main{
+  padding-top: 4em;
+  padding-left: 19em;
   padding: 4em 0 0 var(--asideMinWidth);
+  float: right;
   box-sizing: border-box;
   width: 100%;
 }
 
 main>section, main>article{
+  background: white;
   background: var(--contentBgColor);
 }
 
@@ -138,6 +148,8 @@ main>section>ul, main>section>p, main>section>h2, main>section>h3, main>article>
 }
 
 main>section>ul{
+  display: flex;
+  flex-wrap: wrap;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(15.5em, 1fr));
@@ -159,6 +171,7 @@ main>section>ul>li>a>img:hover{
 } */
 
 aside{
+  width: 19em;
   width: var(--asideMinWidth);
   /* min-width: var(--asideMinWidth); */
   padding: 0 2em;
@@ -238,6 +251,8 @@ aside>div:first-child li a{
 }
 
 .profileContent ul.profileImagesList{
+  display: flex;
+  flex-wrap: wrap;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(7em, 1fr));
   list-style: none;
@@ -254,6 +269,8 @@ aside>div:first-child li a{
 .profileContent .interests li{
   padding: .5em;
   text-align: center;
+  border: .1em solid #634193;
+  color: #634193;
   border: .1em solid var(--mainColor);
   color: var(--mainColor);
   margin: .3em;
@@ -261,6 +278,7 @@ aside>div:first-child li a{
 }
 
 .profileContent .interests li:first-child{
+  background: #634193;
   background: var(--mainColor);
   color: white;
 }
