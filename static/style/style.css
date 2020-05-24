@@ -34,12 +34,14 @@ h1{
   color: white;
   color: var(--h1Color);
   padding: .4em;
+  font-size: 1.5em;
 }
 
 h2{
   color: #634193;
   color: var(--mainColor);
   margin: 1em 0 .5em 0;
+  font-size: 1.2em;
 }
 
 p, nav a{

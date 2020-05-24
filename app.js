@@ -13,6 +13,8 @@
 
 // VARIABLES
 const express = require('express')
+const slug = require('slug')
+const bodyParser = require('body-parser')
 
 var profiles = [
   {
@@ -34,19 +36,23 @@ var testVar = 'ding'
 // const app = express();
 express()
   .use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
+  .use(bodyParser.urlencoded({extended: true}))
   .set('view engine', 'ejs')
   .set('views', 'view')
+  .post('/', edit)
   .get('/', home)
   .get('/register', register)
   .get('/about', about)
   .get('/mp3', mp3)
   .get('/profile', profile )
   .get('/profile/:id', profileID)
+  .get('/edit', form)
+  .get('/list', list)
   .listen(3000)
 
 // Make homepage
 function home(req, res){
-  res.render('test', {profiles: profiles})
+  res.render('index', {profiles: profiles})
   // res.sendfile(__dirname + '/index.html')
 }
 
@@ -76,9 +82,31 @@ function profile(req, res){
   res.render('profile')
 }
 
+function edit(req, res){
+  profiles.push({
+    name: req.body.name,
+    age: req.body.age,
+    interests: req.body.interests,
+    location: req.body.location
+  })
+  // for(var i=0; i < profiles.length; i++){
+  //   console.log(profiles[i].name);
+  // }
+
+  res.redirect('/')
+}
+
+function form(req, res){
+  res.render('edit.ejs', {profiles: profiles})
+}
+
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
 function profileID(req, res){
   res.send('Dit profiel heeft het id ' + req.params.id)
+}
+
+function list(req, res){
+  res.render('listOfProfiles.ejs', {profiles: profiles})
 }
 
 // app.use(function(req, res){
