@@ -67,6 +67,7 @@ header{
   max-width: 75em;
   max-width: var(--wrapper);
   margin-right: 1em;
+  z-index: 5;
 }
 
 header>a{
@@ -92,9 +93,8 @@ nav {
 nav ul{
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-around;
   list-style: none;
-  /* align-items: flex-end; */
   margin: 0;
   padding: 0;
   height: 4em;
@@ -107,7 +107,7 @@ nav ul a{
   text-align: center;
   text-decoration: none;
   color: var(--accentColor);
-  padding: 0 1em;
+  /* padding: 0 1em; */
 }
 
 nav ul img{
@@ -121,18 +121,7 @@ nav ul img{
 
 /* main */
 main{
-
-  /* display: grid;
-  grid-template-columns: 1fr 4fr; */
-}
-
-/* main section{
-
-  background: white;
-} */
-
-main{
-  padding-top: 4em;
+  padding-top: 3.5em;
   padding-left: 19em;
   padding: 4em 0 0 var(--asideMinWidth);
   float: right;
@@ -154,18 +143,41 @@ main>section>ul{
   flex-wrap: wrap;
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15.5em, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
   grid-gap: .5em;
 }
 
-main>section>ul>li>a>img{
+main>section ul li img{
   border: .1em solid green;
   box-sizing: border-box;
   transition: .3s ease-in-out;
 }
 
+main>section ul li img:before, main>section ul li img:after{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+}
+
+main>section ul li img:before{
+  top: -6px;
+  left: 0;
+  border-top: 6px black solid;
+  border-bottom: 6px black solid;
+}
+
+main>section ul li img:after{
+  left: -6px;
+  top: 0;
+  border-left: 6px black solid;
+  border-right: 6px black solid;
+}
+
 main>section>ul>li>a>img:hover{
-  transform: scale(1.1);
+  transform: scale(1.04);
+  z-index: 2;
 }
 
 /* main img{
@@ -185,6 +197,7 @@ aside{
 aside>div{
   border-top: .1em dotted var(--mainColor);
   padding: 1em;
+  margin-top: 1em;
   box-sizing: border-box;
 }
 
@@ -236,9 +249,51 @@ aside>div:first-child li:last-child a{
   padding: .5em;
 }
 
+/* aside>div:first-child li:last-child a:before, aside>div:first-child li:last-child a:after{
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-sizing: content-box;
+}
+
+aside>div:first-child li:last-child a:before{
+  top: -6px;
+  left: 0;
+  border-top: 6px black solid;
+  border-bottom: 6px black solid;
+}
+
+aside>div:first-child li:last-child a:after{
+  left: -6px;
+  top: 0;
+  border-left: 6px black solid;
+  border-right: 6px black solid;
+} */
+
 aside>div:first-child li a{
   color: var(--accentColor);
   text-decoration: none;
+}
+
+.asideLabel{
+  display: none;
+  position: fixed;
+  background: var(--accentColor3);
+  color: white;
+  border: none;
+  top: 90vh;
+  left: 0;
+  z-index: 99;
+  font-size: 1.5em;
+  padding: .3em;
+  box-sizing: border-box;
+  text-align: center;
+  transition: .8s all cubic-bezier(.91,-0.2,.04,1.1);
+}
+
+#asideButton{
+  display: none;
 }
 
 /* profile-page */
@@ -295,9 +350,53 @@ aside>div:first-child li a{
   border: none;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 800px) {
   aside{
-    left: -18.5em;
-    border-right: 1px dotted black;
+    left: -19em;
+    margin-top: 6.8em;
+    background: var(--bgColor);
+    transition: .8s all cubic-bezier(.91,-0.2,.04,1.1);
+    z-index: 4;
+    min-height: 100vh;
   }
+
+  .asideLabel{
+    display: block;
+  }
+
+  #asideButton:checked ~ aside{
+    left: -1em;
+  }
+
+  #asideButton:checked + .asideLabel{
+    /* margin-left: 19em; */
+    -moz-transform: scale(-1, 1);
+    -webkit-transform: scale(-1, 1);
+    -o-transform: scale(-1, 1);
+    -ms-transform: scale(-1, 1);
+    transform: scale(-1, 1);
+    background: var(--accentColor);
+    left: 11em;
+  }
+
+  main{
+    padding: 8em 0 0 0;
+  }
+
+  header{
+    flex-direction: column;
+    justify-content: center;
+    background: white;
+    background: var(--contentBgColor);
+    border-bottom: 1px solid var(--bgColor);
+  }
+
+  header>a img{
+    display: block;
+    height: 3.5em;
+    padding: .5em 1em;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--bgColor);
+  }
+
 }
