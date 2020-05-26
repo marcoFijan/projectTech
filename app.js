@@ -16,22 +16,95 @@ const express = require('express')
 const slug = require('slug')
 const bodyParser = require('body-parser')
 
-var profiles = [
-  {
-    name: 'Bas',
-    age: 22,
-    interests: ['nintendo', 'playstation', 'sword art online'],
-    location: 'Bleiswijk'
-  },
-  {
-    name: 'Danie',
-    age: 20,
-    interests: ['nintendo', 'xbox', 'xenoblade'],
-    location: 'Opmeer'
-  }
-]
+// DATABASE VARIABLES
+const mongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 
-var testVar = 'ding'
+// const { MongoClient } = require("mongodb");
+const mongoDB = process.env.DB_URL
+let localDB = null
+let uri = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/geekMatching'
+
+mongoClient.connect(uri, function(err, clientDB){
+  if (err) {
+    console.log('I AM ERROR: ' + err)
+  }
+  else{
+    localDB = clientDB.db(process.env.DB_NAME)
+    console.log('succes')
+  }
+})
+
+
+// Replace the following with your Atlas connection string
+// const client = new MongoClient(mongoDatabase);
+//
+// async function run() {
+//     try {
+//         await client.connect();
+//         console.log("Connected correctly to server");
+//
+//     } catch (err) {
+//         console.log(err.stack);
+//     }
+//     finally {
+//         await client.close();
+//     }
+// }
+//
+// run().catch(console.dir);
+
+
+// const mongo = require('mongodb')
+
+// db.collection.insertOne(profiles)
+//   .then(result => console.log(`Successfully inserted item with _id: ${result.insertedId}`))
+//   .catch(err => console.error(`Failed to insert item: ${err}`))
+
+// var profiles = [
+//   {
+//     name: 'Bas',
+//     age: 22,
+//     interests: ['nintendo', 'playstation', 'sword art online'],
+//     location: 'Bleiswijk',
+//     about: 'Hey, ik ben Bas, vraag maar raak wat je wilt weten over mij'
+//   },
+//   {
+//     name: 'Danie',
+//     age: 20,
+//     interests: ['nintendo', 'xbox', 'xenoblade'],
+//     location: 'Opmeer',
+//     about: 'Hey, ik ben Danie, vraag maar raak wat je wilt weten over mij'
+//   },
+//   {
+//     name: 'Dennis',
+//     age: 19,
+//     interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
+//     location: 'Berkel',
+//     about: 'Hey, ik ben Dennis, vraag maar raak wat je wilt weten over mij'
+//   },
+//   {
+//     name: 'Alex',
+//     age: 24,
+//     interests: ['nintendo', 'playstation', 'Zelda', 'Metroid', 'mario kart', 'marvel', 'batman'],
+//     location: 'Almere',
+//     about: 'Hey, ik ben Alex, vraag maar raak wat je wilt weten over mij'
+//   },
+//   {
+//     name: 'Henk',
+//     age: 22,
+//     interests: ['playstation', 'cod mw', 'game of thrones', 'westworld', 'black mirror', 'star trek', 'doctor who'],
+//     location: 'Almere',
+//     about: 'Hey, ik ben Henk, vraag maar raak wat je wilt weten over mij'
+//   },
+//   {
+//     name: 'Jan',
+//     age: 22,
+//     interests: ['sweetrolls', 'skyrim', 'elder scrolls', 'oblivion', 'witcher'],
+//     location: 'Almere',
+//     about: 'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
+//   }
+// ]
 
 // const app = express();
 express()
@@ -48,12 +121,37 @@ express()
   .get('/profile/:id', profileID)
   .get('/edit', form)
   .get('/list', list)
+  .get('/test', test)
   .listen(3000)
 
 // Make homepage
 function home(req, res){
   res.render('index', {profiles: profiles})
   // res.sendfile(__dirname + '/index.html')
+}
+
+function test(req, res, next){
+  localDB.collection('profiles').find().toArray(profilesToArray)(
+
+    function profilesToArray(err, profiles){
+      if (err){
+        console.log(err)
+      }
+      else{
+        res.render('listOfDBProfiles.ejs', {profiles: profiles})
+      }
+    }
+  )
+
+  // {name: "Bas"})
+  // .then( (err, name) => {
+  //   if(err){
+  //     console.log(err)
+  //   }
+  //   else{
+  //     console.log(name)
+  //   }
+  // })
 }
 
 // Make registerpage
