@@ -4,23 +4,26 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 // DATABASE VARIABLES
-// const mongoClient = require('mongodb').MongoClient
-// require('dotenv').config()
+const mongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 
-// const { MongoClient } = require("mongodb");
-// const mongoDB = process.env.DB_URL;
-// let localDB = null
-// const uri = process.env.DB_URI
-//
+let localDB = null
+const uri = process.env.DB_URI
+
 // mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
-// 	if (err) {
-// 		console.log('I AM ERROR: ' + err)
-// 	} else {
-// 		localDB = clientDB.db(process.env.DB_NAME)
-// 		console.log(localDB)
-// 		console.log('Connection with database succesfull')
-// 	}
+// 	if (err) throw err
+// 	localDB = clientDB.db(process.env.DB_NAME)
 // })
+
+mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
+	if (err) {
+		console.log('I AM ERROR: ' + err)
+	} else {
+		localDB = clientDB.db(process.env.DB_NAME)
+		console.log(localDB)
+		console.log('Connection with database succesfull')
+	}
+})
 
 var profiles = [
 	{
@@ -90,7 +93,7 @@ express()
 	.use(bodyParser.urlencoded({ extended: true }))
 	.set('view engine', 'ejs')
 	.set('views', 'view')
-	.post('/', edit)
+	.post('/', edit2)
 	.get('/', home)
 	.get('/register', register)
 	.get('/about', about)
@@ -168,6 +171,27 @@ function edit(req, res) {
 	// }
 
 	res.redirect('/')
+}
+
+function edit2(req, res, next) {
+	localDB.collection('profiles').insertOne(
+		{
+			name: req.body.name,
+			age: req.body.age,
+			interests: req.body.interests,
+			location: req.body.location
+		},
+		insertProfile
+	)
+
+	function insertProfile(err, foundData) {
+		if (err) {
+			next(err)
+		} else {
+			console.log('trying pushing data...')
+			res.redirect('/' + foundData.insertedId)
+		}
+	}
 }
 
 function form(req, res) {
