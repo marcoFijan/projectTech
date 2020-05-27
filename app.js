@@ -1,26 +1,27 @@
 // VARIABLES
-const express = require('express');
-const slug = require('slug');
-const bodyParser = require('body-parser');
+const express = require('express')
+const slug = require('slug')
+const bodyParser = require('body-parser')
 
 // DATABASE VARIABLES
-const mongoClient = require('mongodb').MongoClient;
-require('dotenv').config();
+const mongoClient = require('mongodb').MongoClient
+require('dotenv').config()
 
 // const { MongoClient } = require("mongodb");
-const mongoDB = process.env.DB_URL;
-let localDB = null;
-let uri = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT;
+const mongoDB = process.env.DB_URL
+let localDB = null
+let uri = 'mongodb://' + process.env.DB_HOST + ':' + process.env.DB_PORT
 
-mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
+mongoClient.connect(uri, {useUnifiedTopology: true}, function(err, clientDB){
   if (err) {
-    console.log('I AM ERROR: ' + err);
-  } else {
-    localDB = clientDB.db(process.env.DB_NAME);
-    console.log(localDB);
-    console.log('Connection with database succesfull');
+    console.log('I AM ERROR: ' + err)
   }
-});
+  else{
+    localDB = clientDB.db(process.env.DB_NAME)
+    console.log(localDB)
+    console.log('Connection with database succesfull')
+  }
+})
 
 var profiles = [
   {
@@ -47,30 +48,14 @@ var profiles = [
   {
     name: 'Alex',
     age: 24,
-    interests: [
-      'nintendo',
-      'playstation',
-      'Zelda',
-      'Metroid',
-      'mario kart',
-      'marvel',
-      'batman'
-    ],
+    interests: ['nintendo', 'playstation', 'Zelda', 'Metroid', 'mario kart', 'marvel', 'batman'],
     location: 'Almere',
     about: 'Hey, ik ben Alex, vraag maar raak wat je wilt weten over mij'
   },
   {
     name: 'Henk',
     age: 22,
-    interests: [
-      'playstation',
-      'cod mw',
-      'game of thrones',
-      'westworld',
-      'black mirror',
-      'star trek',
-      'doctor who'
-    ],
+    interests: ['playstation', 'cod mw', 'game of thrones', 'westworld', 'black mirror', 'star trek', 'doctor who'],
     location: 'Almere',
     about: 'Hey, ik ben Henk, vraag maar raak wat je wilt weten over mij'
   },
@@ -79,15 +64,14 @@ var profiles = [
     age: 22,
     interests: ['sweetrolls', 'skyrim', 'elder scrolls', 'oblivion', 'witcher'],
     location: 'Almere',
-    about:
-      'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
+    about: 'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
   }
-];
+]
 
 // const app = express();
 express()
   .use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
-  .use(bodyParser.urlencoded({ extended: true }))
+  .use(bodyParser.urlencoded({extended: true}))
   .set('view engine', 'ejs')
   .set('views', 'view')
   .post('/', edit)
@@ -95,20 +79,20 @@ express()
   .get('/register', register)
   .get('/about', about)
   .get('/mp3', mp3)
-  .get('/profile', profile)
+  .get('/profile', profile )
   .get('/profile/:id', profileID)
   .get('/edit', form)
   .get('/list', list)
   .get('/test', test)
-  .listen(3000);
+  .listen(3000)
 
 // Make homepage
-function home(req, res) {
-  res.render('index', { profiles: profiles });
+function home(req, res){
+  res.render('index', {profiles: profiles})
   // res.sendfile(__dirname + '/index.html')
 }
 
-function test(req, res, next) {
+function test(req, res, next){
   // var profiles2 = localDB.collection('profiles').findOne({name: "Bas"})
   //
   // .then(
@@ -122,34 +106,32 @@ function test(req, res, next) {
   //   }
   // })
 
-  localDB.collection('profiles').insertOne(
-    {
-      name: 'Pedro',
-      age: 23,
-      interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
-      location: 'Bleiswijk',
-      about: 'Hi, ik ben Pedro'
-    },
-    uploadComplete
-  );
+  localDB.collection('profiles').insertOne({
+    name: "Pedro",
+    age: 23,
+    interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
+    location: "Bleiswijk",
+    about: "Hi, ik ben Pedro"
+  }, uploadComplete)
 
-  function uploadComplete(err, profile) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('upload succesfull');
-      res.redirect('/' + profile.insertedId);
+  function uploadComplete(err, profile){
+    if (err){
+      console.log(err)
+    }
+    else{
+      console.log("upload succesfull")
+      res.redirect('/' + profile.insertedId)
     }
   }
 
-  // function profilesToArray(err, profiles){
-  //   if (err){
-  //     console.log(err)
-  //   }
-  //   else{
-  //     res.render('listOfDBProfiles.ejs', {profiles: profiles})
-  //   }
-  // }
+    // function profilesToArray(err, profiles){
+    //   if (err){
+    //     console.log(err)
+    //   }
+    //   else{
+    //     res.render('listOfDBProfiles.ejs', {profiles: profiles})
+    //   }
+    // }
 
   // {name: "Bas"})
   // .then( (err, name) => {
@@ -163,59 +145,60 @@ function test(req, res, next) {
 }
 
 // Make registerpage
-function register(req, res) {
-  res.send('Dit is de registreerpagina');
+function register(req, res){
+  res.send('Dit is de registreerpagina')
 }
 
 // Make an aboutpage
-function about(req, res) {
-  if (req.url === '/about') {
-    res.status(200).send('<h1>hi</h1>');
-    res.end('this is my website\n');
-  } else {
-    res.end('Hello World!\n');
+function about(req, res){
+  if (req.url === '/about'){
+    res.status(200).send('<h1>hi</h1>')
+    res.end('this is my website\n')
+  }
+  else{
+    res.end('Hello World!\n')
   }
 }
 
 // Play sound when accessing /mp3
-function mp3(req, res) {
-  res.sendfile(__dirname + '/static/audio/waaah.mp3');
-  console.log('Why no Wah in smash bros?');
+function mp3(req, res){
+  res.sendfile(__dirname + '/static/audio/waaah.mp3')
+  console.log('Why no Wah in smash bros?')
 }
 
-function profile(req, res) {
-  res.render('profile');
+function profile(req, res){
+  res.render('profile')
 }
 
-function edit(req, res) {
+function edit(req, res){
   profiles.push({
     name: req.body.name,
     age: req.body.age,
     interests: req.body.interests,
     location: req.body.location
-  });
+  })
   // for(var i=0; i < profiles.length; i++){
   //   console.log(profiles[i].name);
   // }
 
-  res.redirect('/');
+  res.redirect('/')
 }
 
-function form(req, res) {
-  res.render('edit.ejs', { profiles: profiles });
+function form(req, res){
+  res.render('edit.ejs', {profiles: profiles})
 }
 
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
-function profileID(req, res) {
-  res.send('Dit profiel heeft het id ' + req.params.id);
+function profileID(req, res){
+  res.send('Dit profiel heeft het id ' + req.params.id)
 }
 
-function list(req, res) {
-  res.render('listOfProfiles.ejs', { profiles: profiles });
+function list(req, res){
+  res.render('listOfProfiles.ejs', {profiles: profiles})
 }
 
 // app.use(function(req, res){
 //   res.status(404).send('<h1>ERRRRROR</h1>')
 // })
 
-console.log('localhost:3000');
+console.log('localhost:3000')
