@@ -1,3 +1,6 @@
 /node_modules
+<<<<<<< HEAD
 /database
 .env
+=======
+>>>>>>> parent of aef36d7... Connection made with database, still need to fix the retrieving data
