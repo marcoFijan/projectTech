@@ -98,7 +98,8 @@ express()
 	)
 	.set('view engine', 'ejs')
 	.set('views', 'view')
-	.post('/', edit2)
+	.post('/edit', edit2)
+	.post('/', sessionProfile)
 	.get('/', home)
 	.get('/register', register)
 	.get('/about', about)
@@ -123,6 +124,11 @@ function home(req, res) {
 	}
 	// res.render('index', { profiles: profiles })
 	// res.sendfile(__dirname + '/index.html')
+}
+
+function sessionProfile(req, res) {
+	console.log(req.body)
+	res.render('index', { profiles: profiles })
 }
 
 // Make registerpage
@@ -181,6 +187,7 @@ function edit(req, res) {
 }
 
 function edit2(req, res, next) {
+	console.log(req.body.name)
 	localDB.collection('profiles').insertOne(
 		{
 			name: req.body.name,
