@@ -1,0 +1,22 @@
+<!-- INCLUDE HEAD -->
+<%- include('components/head.ejs') -%>
+
+<body id="homepage">
+  <!-- INCLUDE HEADER -->
+  <%- include('components/header.ejs') -%>
+
+  <!-- INCLUDE ASIDE -->
+  <%- include('components/aside.ejs') -%>
+  <main id="notFoundPage">
+    <article>
+      <h1>Ow, we kunnen dit niet vinden</h1>
+      <h2>Link not found...</h2>
+      <img src="static/images/blackLink.png" class="notFoundImage" alt="Page not found Image">
+      <p>Het lijkt erop dat u een pagina bezoekt die niet bestaat. Geen zorgen. Klik op de knop hieronder en u gaat weer terug naar de hoofdpagina</p>
+      <a href="/" class="CTA-Button">Terug naar de hoofdpagina</a>
+    </article>
+    <!-- INCLUDE FOOTER -->
+    <%- include('components/footer.ejs') -%>
+  </main>
+</body>
+</html>

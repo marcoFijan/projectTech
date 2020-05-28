@@ -32,13 +32,24 @@ button {
 	font-weight: 900;
 }
 
+.CTA-Button {
+	background: var(--accentColor3);
+	color: white;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 900;
+	padding: 0.5em;
+	margin: 0.5em 0;
+	text-decoration: none;
+}
+
 h1 {
 	background: #634193;
 	background: var(--mainColor);
 	color: white;
 	color: var(--h1Color);
-	padding: 0.4em;
+	padding: 0.4em 1em;
 	font-size: 1.5em;
+	margin: 0 -1em 1em -1em;
 }
 
 h2 {
@@ -138,9 +149,10 @@ main > section,
 main > article {
 	background: white;
 	background: var(--contentBgColor);
+	padding: 0 1.5em;
 }
 
-main > section > ul,
+/* main > section > ul,
 main > section > p,
 main > section > h2,
 main > section > h3,
@@ -149,7 +161,7 @@ main > article > p,
 main > article > h2,
 main > article > h3 {
 	padding: 0 1rem;
-}
+} */
 
 main > section > ul {
 	display: flex;
@@ -255,11 +267,7 @@ aside > div:first-child li:last-child {
 }
 
 aside > div:first-child li:last-child a {
-	background: var(--accentColor3);
 	color: white;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 900;
-	padding: 0.5em;
 }
 
 /* aside>div:first-child li:last-child a:before, aside>div:first-child li:last-child a:after{
@@ -315,7 +323,7 @@ aside > div:first-child li a {
 }
 
 .profileContent article:first-child > img {
-	padding: 0 1em;
+	/* padding: 0 1em; */
 	width: 100%;
 	box-sizing: border-box;
 }
@@ -326,13 +334,15 @@ aside > div:first-child li a {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(7em, 1fr));
 	list-style: none;
-	padding: 0.2em 1em;
+	padding: 0;
+	/* padding: 0.2em 1em; */
 }
 
 .profileContent .interests {
 	display: flex;
 	flex-wrap: wrap;
 	list-style: none;
+	padding: 0;
 	/* padding: 0 1em; */
 }
 
@@ -357,7 +367,6 @@ aside > div:first-child li a {
 	display: block;
 	width: 100%;
 	max-width: 40em;
-	padding: 0 1em;
 	height: 12em;
 	box-sizing: border-box;
 	border: none;
@@ -373,6 +382,27 @@ footer p {
 	color: white;
 	padding: 1em 0;
 	margin: 0;
+}
+
+#notFoundPage h2 {
+	text-align: center;
+}
+
+#notFoundPage a {
+	display: block;
+	text-align: center;
+	margin: 1em auto 0 auto;
+	max-width: 15em;
+}
+
+#notFoundPage article {
+	padding-bottom: 4em;
+}
+
+.notFoundImage {
+	display: block;
+	height: 50vh;
+	margin: 0 auto;
 }
 
 @media only screen and (max-width: 800px) {

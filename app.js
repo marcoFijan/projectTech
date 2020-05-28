@@ -9,7 +9,7 @@ const mongo = require('mongodb')
 const mongoClient = mongo.MongoClient
 require('dotenv').config()
 
-let localDB = null
+let localDB
 const uri = process.env.DB_URI
 
 mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
@@ -88,6 +88,14 @@ var profiles = [
 express()
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
 	.use(bodyParser.urlencoded({ extended: true }))
+	.use(
+		session({
+			secret: 'secret-key',
+			resave: false,
+			saveUninitialized: false,
+			name: null
+		})
+	)
 	.set('view engine', 'ejs')
 	.set('views', 'view')
 	.post('/', edit2)
@@ -100,18 +108,20 @@ express()
 	.get('/edit', form)
 	.get('/list', list)
 	.get('/find', find)
+	.get('/sign-in', signIn)
 	// .get('/test', retrieveData)
 	// .get('/test', test)
+	.use(notFound)
 	.listen(3000)
 
 // Make homepage
 function home(req, res) {
-	// if (req.session.user) {
-	// 	res.render('index', { profiles: profiles })
-	// } else {
-	// 	res.render('sign-in')
-	// }
-	res.render('index', { profiles: profiles })
+	if (req.session.user) {
+		res.render('index', { profiles: profiles })
+	} else {
+		res.render('sign-in')
+	}
+	// res.render('index', { profiles: profiles })
 	// res.sendfile(__dirname + '/index.html')
 }
 
@@ -151,6 +161,10 @@ function mp3(req, res) {
 	console.log('Why no Wah in smash bros?')
 }
 
+function signIn(req, res) {
+	res.render('sign-in')
+}
+
 function profile(req, res) {
 	res.render('profile')
 }
@@ -182,7 +196,7 @@ function edit2(req, res, next) {
 			next(err)
 		} else {
 			console.log('trying pushing data...')
-			res.redirect('/' + foundData.insertedId)
+			res.redirect('/profile/' + foundData.insertedId)
 		}
 	}
 }
@@ -210,6 +224,10 @@ function profileID(req, res, next) {
 			res.send('Account gevonden en heeft id ' + foundProfileID)
 		}
 	}
+}
+
+function notFound(req, res) {
+	res.status(404).render('notFound.ejs')
 }
 
 function list(req, res) {

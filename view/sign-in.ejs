@@ -1,0 +1,22 @@
+<%- include('components/head.ejs') -%>
+<body id='homepage'>
+  <!-- INCLUDE HEADER -->
+  <%- include('components/header.ejs') -%>
+
+  <main class='profileContent'>
+      <article>
+        <h1>Sessionprofiel kiezen</h1>
+        <p>Voordat je de website kan gebruiken, moet je ingelogd zijn. Om het makkelijk te maken staan hieronder een paar profielen waar je voor nu mee kunt 'inloggen'.</p>
+        <h2>Kies je Sessionprofiel</h2>
+        <label for='sessionProfiles'>Ik kies:</label>
+        <select name='sessionProfiles' id='sessionProfiles'>
+          <option value='marco'>Marco</option>
+          <option value='jessica'>Jessica</option>
+          <option value='pieter'>pieter</option>
+        </select>
+      </article>
+      <!-- INCLUDE ASIDE -->
+      <%- include('components/footer.ejs') -%>
+  </main>
+</body>
+</html>
