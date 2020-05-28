@@ -96,9 +96,11 @@ express()
 	.get('/about', about)
 	.get('/mp3', mp3)
 	.get('/profile', profile)
-	.get('/:id', profileID)
+	.get('/profile/:id', profileID)
 	.get('/edit', form)
 	.get('/list', list)
+	.get('/find', find)
+	// .get('/test', retrieveData)
 	// .get('/test', test)
 	.listen(3000)
 
@@ -113,31 +115,24 @@ function home(req, res) {
 	// res.sendfile(__dirname + '/index.html')
 }
 
-// function test(req, res) {
-// 	localDB.collection('profiles').insertOne(
-// 		{
-// 			name: 'Pedro',
-// 			age: 23,
-// 			interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
-// 			location: 'Bleiswijk',
-// 			about: 'Hi, ik ben Pedro'
-// 		},
-// 		uploadComplete
-// 	)
-//
-// 	function uploadComplete(err, profile) {
-// 		if (err) {
-// 			console.log(err)
-// 		} else {
-// 			console.log('upload succesfull')
-// 			res.redirect('/' + profile.insertedId)
-// 		}
-// 	}
-// }
-
 // Make registerpage
 function register(req, res) {
 	res.send('Dit is de registreerpagina')
+}
+
+function find(req, res, next) {
+	localDB
+		.collection('profiles')
+		.find()
+		.toArray(profilesArray)
+
+	function profilesArray(err, profilesArray) {
+		if (err) {
+			next(err)
+		} else {
+			res.render('listOfProfiles', { profiles: profilesArray })
+		}
+	}
 }
 
 // Make an aboutpage
@@ -167,9 +162,6 @@ function edit(req, res) {
 		interests: req.body.interests,
 		location: req.body.location
 	})
-	// for(var i=0; i < profiles.length; i++){
-	//   console.log(profiles[i].name);
-	// }
 
 	res.redirect('/')
 }
@@ -206,7 +198,7 @@ function profileID(req, res, next) {
 
 	localDB.collection('profiles').findOne(
 		{
-			_id: new mongo.ObjectID(profileID)
+			_id: mongo.ObjectID(profileID)
 		},
 		profileIDFound
 	)
@@ -215,7 +207,7 @@ function profileID(req, res, next) {
 		if (err) {
 			next(err)
 		} else {
-			res.send('Accound gevonden en heeft id ' + foundProfileID)
+			res.send('Account gevonden en heeft id ' + foundProfileID)
 		}
 	}
 }
