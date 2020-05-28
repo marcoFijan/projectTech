@@ -1,19 +1,16 @@
 // VARIABLES
 const express = require('express')
-// const slug = require('slug')
+const slug = require('slug')
 const bodyParser = require('body-parser')
+const session = require('express-session')
 
 // DATABASE VARIABLES
-const mongoClient = require('mongodb').MongoClient
+const mongo = require('mongodb')
+const mongoClient = mongo.MongoClient
 require('dotenv').config()
 
 let localDB = null
 const uri = process.env.DB_URI
-
-// mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
-// 	if (err) throw err
-// 	localDB = clientDB.db(process.env.DB_NAME)
-// })
 
 mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
 	if (err) {
@@ -99,7 +96,7 @@ express()
 	.get('/about', about)
 	.get('/mp3', mp3)
 	.get('/profile', profile)
-	.get('/profile/:id', profileID)
+	.get('/:id', profileID)
 	.get('/edit', form)
 	.get('/list', list)
 	// .get('/test', test)
@@ -107,7 +104,11 @@ express()
 
 // Make homepage
 function home(req, res) {
-	console.log('trying to acces index')
+	// if (req.session.user) {
+	// 	res.render('index', { profiles: profiles })
+	// } else {
+	// 	res.render('sign-in')
+	// }
 	res.render('index', { profiles: profiles })
 	// res.sendfile(__dirname + '/index.html')
 }
@@ -199,8 +200,24 @@ function form(req, res) {
 }
 
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
-function profileID(req, res) {
-	res.send('Dit profiel heeft het id ' + req.params.id)
+function profileID(req, res, next) {
+	// res.send('Dit profiel heeft het id ' + req.params.id)
+	let profileID = req.params.id
+
+	localDB.collection('profiles').findOne(
+		{
+			_id: new mongo.ObjectID(profileID)
+		},
+		profileIDFound
+	)
+
+	function profileIDFound(err, foundProfileID) {
+		if (err) {
+			next(err)
+		} else {
+			res.send('Accound gevonden en heeft id ' + foundProfileID)
+		}
+	}
 }
 
 function list(req, res) {
