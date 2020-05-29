@@ -1,4 +1,4 @@
-// VARIABLES
+// REQUIRE VARIABLES
 const express = require('express')
 const slug = require('slug')
 const bodyParser = require('body-parser')
@@ -8,10 +8,10 @@ const session = require('express-session')
 const mongo = require('mongodb')
 const mongoClient = mongo.MongoClient
 require('dotenv').config()
-
-let localDB
+let localDB = null
 const uri = process.env.DB_URI
 
+// MAKE THE CONNECTION WITH DATABASE
 mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
 	if (err) {
 		console.log('I AM ERROR: ' + err)
@@ -22,69 +22,73 @@ mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
 	}
 })
 
-var profiles = [
-	{
-		name: 'Bas',
-		age: 22,
-		interests: ['nintendo', 'playstation', 'sword art online'],
-		location: 'Bleiswijk',
-		about: 'Hey, ik ben Bas, vraag maar raak wat je wilt weten over mij'
-	},
-	{
-		name: 'Danie',
-		age: 20,
-		interests: ['nintendo', 'xbox', 'xenoblade'],
-		location: 'Opmeer',
-		about: 'Hey, ik ben Danie, vraag maar raak wat je wilt weten over mij'
-	},
-	{
-		name: 'Dennis',
-		age: 19,
-		interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
-		location: 'Berkel',
-		about: 'Hey, ik ben Dennis, vraag maar raak wat je wilt weten over mij'
-	},
-	{
-		name: 'Alex',
-		age: 24,
-		interests: [
-			'nintendo',
-			'playstation',
-			'Zelda',
-			'Metroid',
-			'mario kart',
-			'marvel',
-			'batman'
-		],
-		location: 'Almere',
-		about: 'Hey, ik ben Alex, vraag maar raak wat je wilt weten over mij'
-	},
-	{
-		name: 'Henk',
-		age: 22,
-		interests: [
-			'playstation',
-			'cod mw',
-			'game of thrones',
-			'westworld',
-			'black mirror',
-			'star trek',
-			'doctor who'
-		],
-		location: 'Almere',
-		about: 'Hey, ik ben Henk, vraag maar raak wat je wilt weten over mij'
-	},
-	{
-		name: 'Jan',
-		age: 22,
-		interests: ['sweetrolls', 'skyrim', 'elder scrolls', 'oblivion', 'witcher'],
-		location: 'Almere',
-		about:
-			'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
-	}
-]
+// LOCAL VARIABLES
+let allProfiles
+let currentUser
+let profiles
 
-// const app = express();
+// var profiles = [
+// 	{
+// 		name: 'Bas',
+// 		age: 22,
+// 		interests: ['nintendo', 'playstation', 'sword art online'],
+// 		location: 'Bleiswijk',
+// 		about: 'Hey, ik ben Bas, vraag maar raak wat je wilt weten over mij'
+// 	},
+// 	{
+// 		name: 'Danie',
+// 		age: 20,
+// 		interests: ['nintendo', 'xbox', 'xenoblade'],
+// 		location: 'Opmeer',
+// 		about: 'Hey, ik ben Danie, vraag maar raak wat je wilt weten over mij'
+// 	},
+// 	{
+// 		name: 'Dennis',
+// 		age: 19,
+// 		interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
+// 		location: 'Berkel',
+// 		about: 'Hey, ik ben Dennis, vraag maar raak wat je wilt weten over mij'
+// 	},
+// 	{
+// 		name: 'Alex',
+// 		age: 24,
+// 		interests: [
+// 			'nintendo',
+// 			'playstation',
+// 			'Zelda',
+// 			'Metroid',
+// 			'mario kart',
+// 			'marvel',
+// 			'batman'
+// 		],
+// 		location: 'Almere',
+// 		about: 'Hey, ik ben Alex, vraag maar raak wat je wilt weten over mij'
+// 	},
+// 	{
+// 		name: 'Henk',
+// 		age: 22,
+// 		interests: [
+// 			'playstation',
+// 			'cod mw',
+// 			'game of thrones',
+// 			'westworld',
+// 			'black mirror',
+// 			'star trek',
+// 			'doctor who'
+// 		],
+// 		location: 'Almere',
+// 		about: 'Hey, ik ben Henk, vraag maar raak wat je wilt weten over mij'
+// 	},
+// 	{
+// 		name: 'Jan',
+// 		age: 22,
+// 		interests: ['sweetrolls', 'skyrim', 'elder scrolls', 'oblivion', 'witcher'],
+// 		location: 'Almere',
+// 		about:
+// 			'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
+// 	}
+// ]
+
 express()
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
 	.use(bodyParser.urlencoded({ extended: true }))
@@ -109,26 +113,52 @@ express()
 	.get('/edit', form)
 	.get('/list', list)
 	.get('/find', find)
-	.get('/sign-in', signIn)
+	// .get('/sign-in', signIn)
 	// .get('/test', retrieveData)
 	// .get('/test', test)
 	.use(notFound)
 	.listen(3000)
 
-// Make homepage
+// CATCH SESSIONSTATE AT HOMEPAGE
 function home(req, res) {
+	// GO TO HOMEPAGE WHEN SESSION FOUND
 	if (req.session.user) {
 		res.render('index', { profiles: profiles })
-	} else {
+	} // GO TO SIGN-IN PAGE WHEN NO USER/SESSION FOUND
+	else {
 		res.render('sign-in')
 	}
-	// res.render('index', { profiles: profiles })
-	// res.sendfile(__dirname + '/index.html')
 }
 
-function sessionProfile(req, res) {
-	console.log(req.body)
-	res.render('index', { profiles: profiles })
+function sessionProfile(req, res, next) {
+	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
+	profilesToArray(req, res, next).then(() => {
+		if (req.body.sessionProfiles === 'marco') {
+			console.log('marco is binnen')
+		} else if (req.body.sessionProfiles === 'jessica') {
+			console.log('jessica is binnen')
+		} else if (req.body.sessionProfiles === 'pieter') {
+			console.log('pieter is binnen')
+		}
+	})
+	// res.render('index', { profiles: profiles })
+}
+
+function profilesToArray(req, res, next) {
+	localDB
+		.collection('profiles')
+		.find()
+		.toArray(profilesArray)
+
+	function profilesArray(err, profilesArray) {
+		if (err) {
+			next(err)
+		} else {
+			console.log('pushing array to allprofiles')
+			allProfiles = profilesArray
+			// res.render('listOfProfiles', { profiles: profilesArray })
+		}
+	}
 }
 
 // Make registerpage
