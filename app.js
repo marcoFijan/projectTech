@@ -27,6 +27,8 @@ let allProfiles
 let currentUser
 let profiles
 
+// PROMISE VARIABLES
+
 // var profiles = [
 // 	{
 // 		name: 'Bas',
@@ -122,43 +124,52 @@ express()
 // CATCH SESSIONSTATE AT HOMEPAGE
 function home(req, res) {
 	// GO TO HOMEPAGE WHEN SESSION FOUND
-	if (req.session.user) {
-		res.render('index', { profiles: profiles })
+	if (req.session.username) {
+		console.log(profiles)
+		res.render('index', { profiles: profiles, currentUser: req.session })
 	} // GO TO SIGN-IN PAGE WHEN NO USER/SESSION FOUND
 	else {
 		res.render('sign-in')
 	}
 }
 
-function sessionProfile(req, res, next) {
+function sessionProfile(req, res) {
 	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
-	profilesToArray(req, res, next).then(() => {
-		if (req.body.sessionProfiles === 'marco') {
-			console.log('marco is binnen')
-		} else if (req.body.sessionProfiles === 'jessica') {
-			console.log('jessica is binnen')
-		} else if (req.body.sessionProfiles === 'pieter') {
-			console.log('pieter is binnen')
-		}
+	profilesToArray().then(profilesArray => {
+		allProfiles = profilesArray
+		console.log(allProfiles)
+		let currentUser = req.body.sessionProfiles
+		allProfiles.forEach((profile, i) => {
+			if (profile.name === currentUser) {
+				console.log(currentUser + ': im in!')
+				req.session.username = profile.name
+				req.session.age = profile.age
+				req.session.gender = profile.gender
+				req.session.intersts = profile.interests
+				req.session.location = profile.location
+				req.session.about = profile.about
+				profiles = allProfiles
+				profiles.splice(i, 1)
+				console.log('done splicing')
+			}
+		})
 	})
-	// res.render('index', { profiles: profiles })
+	profilesToArray().then(() => {
+		console.log('Calling next then ')
+		console.log(req.session)
+		res.render('index', { profiles: profiles, currentUser: req.session })
+	})
 }
 
-function profilesToArray(req, res, next) {
-	localDB
-		.collection('profiles')
-		.find()
-		.toArray(profilesArray)
-
-	function profilesArray(err, profilesArray) {
-		if (err) {
-			next(err)
-		} else {
-			console.log('pushing array to allprofiles')
-			allProfiles = profilesArray
-			// res.render('listOfProfiles', { profiles: profilesArray })
-		}
-	}
+function profilesToArray() {
+	return new Promise(resolve => {
+		resolve(
+			localDB
+				.collection('profiles')
+				.find()
+				.toArray()
+		)
+	})
 }
 
 // Make registerpage
