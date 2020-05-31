@@ -17,79 +17,16 @@ mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
 		console.log('I AM ERROR: ' + err)
 	} else {
 		localDB = clientDB.db(process.env.DB_NAME)
-		console.log(localDB)
 		console.log('Connection with database succesfull')
 	}
 })
 
 // LOCAL VARIABLES
-let allProfiles
-let currentUser
-let profiles
-
-// PROMISE VARIABLES
-
-// var profiles = [
-// 	{
-// 		name: 'Bas',
-// 		age: 22,
-// 		interests: ['nintendo', 'playstation', 'sword art online'],
-// 		location: 'Bleiswijk',
-// 		about: 'Hey, ik ben Bas, vraag maar raak wat je wilt weten over mij'
-// 	},
-// 	{
-// 		name: 'Danie',
-// 		age: 20,
-// 		interests: ['nintendo', 'xbox', 'xenoblade'],
-// 		location: 'Opmeer',
-// 		about: 'Hey, ik ben Danie, vraag maar raak wat je wilt weten over mij'
-// 	},
-// 	{
-// 		name: 'Dennis',
-// 		age: 19,
-// 		interests: ['nintendo', 'apple', 'Zelda', 'Metroid'],
-// 		location: 'Berkel',
-// 		about: 'Hey, ik ben Dennis, vraag maar raak wat je wilt weten over mij'
-// 	},
-// 	{
-// 		name: 'Alex',
-// 		age: 24,
-// 		interests: [
-// 			'nintendo',
-// 			'playstation',
-// 			'Zelda',
-// 			'Metroid',
-// 			'mario kart',
-// 			'marvel',
-// 			'batman'
-// 		],
-// 		location: 'Almere',
-// 		about: 'Hey, ik ben Alex, vraag maar raak wat je wilt weten over mij'
-// 	},
-// 	{
-// 		name: 'Henk',
-// 		age: 22,
-// 		interests: [
-// 			'playstation',
-// 			'cod mw',
-// 			'game of thrones',
-// 			'westworld',
-// 			'black mirror',
-// 			'star trek',
-// 			'doctor who'
-// 		],
-// 		location: 'Almere',
-// 		about: 'Hey, ik ben Henk, vraag maar raak wat je wilt weten over mij'
-// 	},
-// 	{
-// 		name: 'Jan',
-// 		age: 22,
-// 		interests: ['sweetrolls', 'skyrim', 'elder scrolls', 'oblivion', 'witcher'],
-// 		location: 'Almere',
-// 		about:
-// 			'Jan is een simpele man, hij is iemand die veel kan, en koken doet hij, ja ja, met een pan'
-// 	}
-// ]
+let allProfiles //LIST OF ALL PROFILES FROM THE DATABASE
+let currentUser //OBJECT OF CURRENT USER / SESSION
+let profiles //LIST OF PROFILES EXCLUDING THE CURRENT USER
+let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
+let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
 
 express()
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
@@ -138,26 +75,50 @@ function sessionProfile(req, res) {
 	profilesToArray().then(profilesArray => {
 		allProfiles = profilesArray
 		console.log(allProfiles)
-		let currentUser = req.body.sessionProfiles
+		let sessionUser = req.body.sessionProfiles
 		allProfiles.forEach((profile, i) => {
-			if (profile.name === currentUser) {
-				console.log(currentUser + ': im in!')
+			if (profile.name === sessionUser) {
+				console.log(sessionUser + ': im in!')
 				req.session.username = profile.name
 				req.session.age = profile.age
 				req.session.gender = profile.gender
-				req.session.intersts = profile.interests
+				req.session.interests = profile.interests
 				req.session.location = profile.location
 				req.session.about = profile.about
+				currentUser = req.session
 				profiles = allProfiles
 				profiles.splice(i, 1)
-				console.log('done splicing')
+				// console.log('currentUser ' + currentUser.name)
 			}
 		})
-	})
-	profilesToArray().then(() => {
-		console.log('Calling next then ')
-		console.log(req.session)
-		res.render('index', { profiles: profiles, currentUser: req.session })
+		console.log(currentUser.interests)
+		currentUser.interests.forEach((interestCurUser, i) => {
+			profiles.forEach((profile, j) => {
+				profile.interests.forEach((interestProfile, k) => {
+					if (interestCurUser === interestProfile) {
+						console.log(
+							'found common interest: ' +
+								interestCurUser +
+								'from profile ' +
+								profile.name
+						)
+						sameInterestProfilesUnsorted.push(profile)
+					}
+				})
+			})
+		})
+		// SOURCE: https://stackoverflow.com/questions/38206915/filter-out-array-to-have-only-unique-values
+		sameInterestProfiles = sameInterestProfilesUnsorted.filter(function(
+			profile,
+			l
+		) {
+			return sameInterestProfilesUnsorted.indexOf(profile) == l
+		})
+		console.log(sameInterestProfiles)
+		res.render('index', {
+			profiles: sameInterestProfiles,
+			currentUser: currentUser
+		})
 	})
 }
 

@@ -11,14 +11,15 @@
     <!-- sidebar -->
     <!-- content -->
       <section>
-        <h1>Mede Nintendo fans</h1>
+        <h1>Geeks met dezelfde interesses</h1>
         <ul>
-          <li><a href="/profile"><img src="static/images/profileImage.svg"></a></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
+          <% for (var i = 0; i < profiles.length; i++) { %>
+            <li>
+              <img src="static/images/profileImage.svg">
+              <h2><%= profiles[i].name %>, <%= profiles[i].age %></h2>
+              <p><%= profiles[i].location %></p>
+            </li>
+          <% } %>
         </ul>
       </section>
       <section>
