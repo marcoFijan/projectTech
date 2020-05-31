@@ -29,7 +29,6 @@ let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
 
 express()
-	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
 	.use(bodyParser.urlencoded({ extended: true }))
 	.use(
 		session({
@@ -39,6 +38,7 @@ express()
 			name: null
 		})
 	)
+	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
 	.set('view engine', 'ejs')
 	.set('views', 'view')
 	.post('/edit', edit2)
@@ -47,14 +47,10 @@ express()
 	.get('/register', register)
 	.get('/about', about)
 	.get('/mp3', mp3)
-	.get('/profile', profile)
 	.get('/profile/:id', profileID)
 	.get('/edit', form)
 	.get('/list', list)
 	.get('/find', find)
-	// .get('/sign-in', signIn)
-	// .get('/test', retrieveData)
-	// .get('/test', test)
 	.use(notFound)
 	.listen(3000)
 
@@ -90,6 +86,10 @@ function sessionProfile(req, res) {
 				profiles.splice(i, 1)
 				// console.log('currentUser ' + currentUser.name)
 			}
+			// else{
+			//   console.log('Profile not found. Redirecting.....')
+			//   res.redirect('/')
+			// }
 		})
 		console.log(currentUser.interests)
 		currentUser.interests.forEach((interestCurUser, i) => {
@@ -215,9 +215,9 @@ function form(req, res) {
 }
 
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
-function profileID(req, res, next) {
-	// res.send('Dit profiel heeft het id ' + req.params.id)
+function profileID(req, res) {
 	let profileID = req.params.id
+	// let profileID = req.query
 
 	localDB.collection('profiles').findOne(
 		{
@@ -227,16 +227,27 @@ function profileID(req, res, next) {
 	)
 
 	function profileIDFound(err, foundProfileID) {
+		console.log(foundProfileID)
 		if (err) {
-			next(err)
+			res.redirect('/')
 		} else {
-			res.send('Account gevonden en heeft id ' + foundProfileID)
+			try {
+				res.render('profile.ejs', {
+					profiles: profiles,
+					currentUser: req.session
+				})
+			} catch (error) {
+				res.redirect('/')
+			}
 		}
 	}
 }
 
 function notFound(req, res) {
-	res.status(404).render('notFound.ejs')
+	res.status(404).render('notFound.ejs', {
+		profiles: sameInterestProfiles,
+		currentUser: currentUser
+	})
 }
 
 function list(req, res) {

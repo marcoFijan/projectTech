@@ -14,11 +14,13 @@
         <h1>Geeks met dezelfde interesses</h1>
         <ul>
           <% for (var i = 0; i < profiles.length; i++) { %>
-            <li>
-              <img src="static/images/profileImage.svg">
-              <h2><%= profiles[i].name %>, <%= profiles[i].age %></h2>
-              <p><%= profiles[i].location %></p>
-            </li>
+            <a href="/profile/<%= profiles[i]._id %>">
+              <li>
+                <img src="static/images/profileImage.svg">
+                <h2><%= profiles[i].name %>, <%= profiles[i].age %></h2>
+                <p><%= profiles[i].location %></p>
+              </li>
+            </a>
           <% } %>
         </ul>
       </section>
