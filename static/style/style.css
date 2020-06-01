@@ -178,22 +178,50 @@ main > section > ul {
 	grid-gap: 1em;
 }
 
+main > section > ul li {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: flex-end;
+	margin-bottom: 0.5em;
+	text-decoration: none;
+	background: #e7313d;
+	background: var(--accentColor);
+}
+
+main > section > ul li h2,
+main > section > ul li p {
+	margin: 0;
+	text-decoration: none;
+	padding: 0.2rem 0.5rem;
+	color: white;
+}
+
 /* STYLING IF GRID NOT SUPPORTED */
 main > section > ul li {
 	flex-basis: 13em;
 	flex-grow: 1;
 	max-width: 17em;
+	margin: 0.2em;
+}
+
+main > section > ul a {
+	text-decoration: none;
+	transition: 0.3s ease-in-out;
 }
 
 main > section ul li img {
 	width: 100%;
-	/* min-width: 13em; */
-	border: 0.1em solid green;
+	border: 0.1em solid #e7313d;
+	border: 0.1em solid var(--accentColor);
 	box-sizing: border-box;
-	transition: 0.3s ease-in-out;
 }
 
-main > section > ul > li > a > img:hover {
+.onlineProfile img {
+	/* border: 0.2em solid green; */
+}
+
+main > section > ul > a:hover {
 	transform: scale(1.04);
 	z-index: 2;
 }
@@ -371,10 +399,17 @@ aside > div:first-child li a {
 	border-bottom: 0.1em solid var(--mainColor);
 }
 
+.updateProfileForm p {
+	display: block;
+	width: 100%;
+}
+
 input[name='gender'] {
-	width: 3em;
-	/* display: inline-block; */
-	background: red;
+	width: 10%;
+}
+
+.genderLabel {
+	width: 80%;
 }
 
 /* ---------------------------------------------------FOOTER */

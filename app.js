@@ -27,6 +27,7 @@ let currentUser //OBJECT OF CURRENT USER / SESSION
 let profiles //LIST OF PROFILES EXCLUDING THE CURRENT USER
 let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
+let onlineProfiles = [] //LIST OF PROFILES WHO ARE ONLINE
 
 express()
 	.use(bodyParser.urlencoded({ extended: true }))
@@ -41,7 +42,7 @@ express()
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
 	.set('view engine', 'ejs')
 	.set('views', 'view')
-	.post('/edit', edit2)
+	.post('/edit', edit)
 	.post('/', sessionProfile)
 	.get('/', home)
 	// .get('/register', register)
@@ -62,7 +63,8 @@ function home(req, res) {
 		res.render('index', {
 			profiles: profiles,
 			currentUser: req.session,
-			allProfiles: allProfiles
+			allProfiles: allProfiles,
+			onlineProfiles: onlineProfiles
 		})
 	} // GO TO SIGN-IN PAGE WHEN NO USER/SESSION FOUND
 	else {
@@ -78,6 +80,8 @@ function sessionProfile(req, res) {
 		allProfiles.forEach((profile, i) => {
 			if (profile.name === sessionUser) {
 				console.log(sessionUser + ': im in!')
+				req.session._id = profile._id
+				console.log(profile._id)
 				req.session.username = profile.name
 				req.session.age = profile.age
 				req.session.gender = profile.gender
@@ -89,16 +93,8 @@ function sessionProfile(req, res) {
 				profiles.splice(i, 1)
 			}
 		})
-		// currentUser.interests.forEach((interestCurUser, i) => {
-		// 	profiles.forEach((profile, j) => {
-		// 		profile.interests.forEach((interestProfile, k) => {
-		// 			if (interestCurUser === interestProfile) {
-		// 				sameInterestProfilesUnsorted.push(profile)
-		// 			}
-		// 		})
-		// 	})
-		// })
-		checkInterests()
+		checkInterests() //CALL FUNCTION TO CHECK COMMON INTERESTS
+		checkOnlineStatus() //CALL FUNCTION TO CHECK WHICH PROFILES ARE ONLINE
 		// SOURCE: https://stackoverflow.com/questions/38206915/filter-out-array-to-have-only-unique-values
 		sameInterestProfiles = sameInterestProfilesUnsorted.filter(function(
 			profile,
@@ -106,24 +102,32 @@ function sessionProfile(req, res) {
 		) {
 			return sameInterestProfilesUnsorted.indexOf(profile) == l
 		})
-		console.log(sameInterestProfiles)
 		res.render('index', {
 			profiles: sameInterestProfiles,
 			currentUser: currentUser,
-			allProfiles: allProfiles
+			allProfiles: allProfiles,
+			onlineProfiles: onlineProfiles
 		})
 	})
 }
 
 function checkInterests() {
-	currentUser.interests.forEach((interestCurUser, i) => {
-		profiles.forEach((profile, j) => {
-			profile.interests.forEach((interestProfile, k) => {
+	currentUser.interests.forEach(interestCurUser => {
+		profiles.forEach(profile => {
+			profile.interests.forEach(interestProfile => {
 				if (interestCurUser === interestProfile) {
 					sameInterestProfilesUnsorted.push(profile)
 				}
 			})
 		})
+	})
+}
+
+function checkOnlineStatus() {
+	profiles.forEach(profile => {
+		if (profile.onlineStatus === 'online') {
+			onlineProfiles.push(profile)
+		}
 	})
 }
 
@@ -187,18 +191,25 @@ function profile(req, res) {
 }
 
 function edit(req, res) {
-	profiles.push({
-		name: req.body.name,
-		age: req.body.age,
-		interests: req.body.interests,
-		location: req.body.location
-	})
-
+	localDB.collection('profiles').updateOne(
+		{
+			_id: mongo.ObjectID(currentUser._id)
+		},
+		{
+			$set: {
+				name: req.body.name,
+				age: parseInt(req.body.age), //CONVERT TO INTEGER
+				gender: req.body.gender,
+				location: req.body.location,
+				about: req.body.about
+			}
+		}
+	)
+	sessionProfile(req, res)
 	res.redirect('/')
 }
 
 function edit2(req, res, next) {
-	console.log(req.body.name)
 	localDB.collection('profiles').insertOne(
 		{
 			name: req.body.name,
@@ -265,9 +276,5 @@ function notFound(req, res) {
 function list(req, res) {
 	res.render('listOfProfiles.ejs', { profiles: profiles })
 }
-
-// app.use(function(req, res){
-//   res.status(404).send('<h1>ERRRRROR</h1>')
-// })
 
 console.log('localhost:3000')
