@@ -29,31 +29,31 @@ let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
 let onlineProfiles = [] //LIST OF PROFILES WHO ARE ONLINE
 
-express()
-	.use(bodyParser.urlencoded({ extended: true }))
-	.use(
-		session({
-			secret: 'secret-key',
-			resave: false,
-			saveUninitialized: false,
-			name: null
-		})
-	)
-	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
-	.set('view engine', 'ejs')
-	.set('views', 'view')
-	.post('/edit', edit)
-	.post('/', sessionProfile)
-	.get('/', home)
-	// .get('/register', register)
-	.get('/about', about)
-	.get('/mp3', mp3)
-	.get('/profile/:id', profileID)
-	.get('/edit', form)
-	.get('/list', list)
-	.get('/find', find)
-	.use(notFound)
-	.listen(3000)
+// express()
+// 	.use(bodyParser.urlencoded({ extended: true }))
+// 	.use(
+// 		session({
+// 			secret: 'secret-key',
+// 			resave: false,
+// 			saveUninitialized: false,
+// 			name: null
+// 		})
+// 	)
+// 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
+// 	.set('view engine', 'ejs')
+// 	.set('views', 'view')
+// 	.post('/edit', edit)
+// 	.post('/', sessionProfile)
+// 	.get('/', home)
+// 	// .get('/register', register)
+// 	// .get('/about', about)
+// 	// .get('/mp3', mp3)
+// 	.get('/profile/:id', profileID)
+// 	.get('/edit', form)
+// 	.get('/list', list)
+// 	.get('/find', find)
+// 	.use(notFound)
+// 	.listen(3000)
 
 // CATCH SESSIONSTATE AT HOMEPAGE
 function home(req, res) {
@@ -72,7 +72,7 @@ function home(req, res) {
 	}
 }
 
-function sessionProfile(req, res) {
+const sessionProfile = (req, res) => {
 	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
 	profilesToArray().then(profilesArray => {
 		allProfiles = profilesArray
@@ -111,7 +111,7 @@ function sessionProfile(req, res) {
 	})
 }
 
-function checkInterests() {
+const checkInterests = () => {
 	currentUser.interests.forEach(interestCurUser => {
 		profiles.forEach(profile => {
 			profile.interests.forEach(interestProfile => {
@@ -123,7 +123,7 @@ function checkInterests() {
 	})
 }
 
-function checkOnlineStatus() {
+const checkOnlineStatus = () => {
 	profiles.forEach(profile => {
 		if (profile.onlineStatus === 'online') {
 			onlineProfiles.push(profile)
@@ -131,7 +131,7 @@ function checkOnlineStatus() {
 	})
 }
 
-function isSignedIn(req) {
+const isSignedIn = req => {
 	// CHECK IF A SESSIONUSER HAS BEEN SELECTED
 	if (req.session.username) {
 		return true
@@ -140,7 +140,7 @@ function isSignedIn(req) {
 	}
 }
 
-function profilesToArray() {
+const profilesToArray = () => {
 	return new Promise(resolve => {
 		resolve(
 			localDB
@@ -151,46 +151,46 @@ function profilesToArray() {
 	})
 }
 
-function find(req, res, next) {
-	localDB
-		.collection('profiles')
-		.find()
-		.toArray(profilesArray)
-
-	function profilesArray(err, profilesArray) {
-		if (err) {
-			next(err)
-		} else {
-			res.render('listOfProfiles', { profiles: profilesArray })
-		}
-	}
-}
+// function find(req, res, next) {
+// 	localDB
+// 		.collection('profiles')
+// 		.find()
+// 		.toArray(profilesArray)
+//
+// 	function profilesArray(err, profilesArray) {
+// 		if (err) {
+// 			next(err)
+// 		} else {
+// 			res.render('listOfProfiles', { profiles: profilesArray })
+// 		}
+// 	}
+// }
 
 // Make an aboutpage
-function about(req, res) {
-	if (req.url === '/about') {
-		res.status(200).send('<h1>hi</h1>')
-		res.end('this is my website\n')
-	} else {
-		res.end('Hello World!\n')
-	}
-}
+// function about(req, res) {
+// 	if (req.url === '/about') {
+// 		res.status(200).send('<h1>hi</h1>')
+// 		res.end('this is my website\n')
+// 	} else {
+// 		res.end('Hello World!\n')
+// 	}
+// }
 
 // Play sound when accessing /mp3
-function mp3(req, res) {
-	res.sendfile(__dirname + '/static/audio/waaah.mp3')
-	console.log('Why no Wah in smash bros?')
-}
+// function mp3(req, res) {
+// 	res.sendfile(__dirname + '/static/audio/waaah.mp3')
+// 	console.log('Why no Wah in smash bros?')
+// }
 
-function signIn(req, res) {
-	res.render('sign-in')
-}
+// function signIn(req, res) {
+// 	res.render('sign-in')
+// }
 
-function profile(req, res) {
-	res.render('profile')
-}
+// function profile(req, res) {
+// 	res.render('profile')
+// }
 
-function edit(req, res) {
+const edit = (req, res) => {
 	localDB.collection('profiles').updateOne(
 		{
 			_id: mongo.ObjectID(currentUser._id)
@@ -206,38 +206,59 @@ function edit(req, res) {
 		}
 	)
 	sessionProfile(req, res)
-	res.redirect('/')
+	res.redirect('/profile/' + currentUser._id)
 }
 
-function edit2(req, res, next) {
-	localDB.collection('profiles').insertOne(
-		{
-			name: req.body.name,
-			age: req.body.age,
-			interests: req.body.interests,
-			location: req.body.location
-		},
-		insertProfile
-	)
+// function edit(req, res) {
+// 	localDB.collection('profiles').updateOne(
+// 		{
+// 			_id: mongo.ObjectID(currentUser._id)
+// 		},
+// 		{
+// 			$set: {
+// 				name: req.body.name,
+// 				age: parseInt(req.body.age), //CONVERT TO INTEGER
+// 				gender: req.body.gender,
+// 				location: req.body.location,
+// 				about: req.body.about
+// 			}
+// 		}
+// 	)
+// 	sessionProfile(req, res)
+// 	res.redirect('/')
+// }
 
-	function insertProfile(err, foundData) {
-		if (err) {
-			next(err)
-		} else {
-			console.log('trying pushing data...')
-			res.redirect('/profile/' + foundData.insertedId)
-		}
-	}
-}
+// function edit2(req, res, next) {
+// 	localDB.collection('profiles').insertOne(
+// 		{
+// 			name: req.body.name,
+// 			age: req.body.age,
+// 			interests: req.body.interests,
+// 			location: req.body.location
+// 		},
+// 		insertProfile
+// 	)
+//
+// 	function insertProfile(err, foundData) {
+// 		if (err) {
+// 			next(err)
+// 		} else {
+// 			console.log('trying pushing data...')
+// 			res.redirect('/profile/' + foundData.insertedId)
+// 		}
+// 	}
+// }
 
-function form(req, res) {
+const form = (req, res) => {
 	res.render('edit.ejs', { currentUser: currentUser })
 }
 
-// id Can be generated from everything. For instance, it can be an unique idcode from a database
-function profileID(req, res) {
+// function form(req, res) {
+// 	res.render('edit.ejs', { currentUser: currentUser })
+// }
+
+const profileID = (req, res) => {
 	let profileID = req.params.id
-	// let profileID = req.query
 
 	localDB.collection('profiles').findOne(
 		{
@@ -266,15 +287,75 @@ function profileID(req, res) {
 	}
 }
 
-function notFound(req, res) {
+// function profileID(req, res) {
+// 	let profileID = req.params.id
+// 	// let profileID = req.query
+//
+// 	localDB.collection('profiles').findOne(
+// 		{
+// 			_id: mongo.ObjectID(profileID)
+// 		},
+// 		profileIDFound
+// 	)
+//
+// 	function profileIDFound(err, foundProfile) {
+// 		console.log(foundProfile)
+// 		if (err) {
+// 			res.redirect('/notFound')
+// 		} else if (foundProfile === null) {
+// 			res.redirect('/notFound')
+// 		} else {
+// 			try {
+// 				res.render('profile.ejs', {
+// 					profiles: profiles,
+// 					currentUser: req.session,
+// 					profile: foundProfile
+// 				})
+// 			} catch (error) {
+// 				res.redirect('/notFound')
+// 			}
+// 		}
+// 	}
+// }
+
+const notFound = (req, res) => {
 	res.status(404).render('notFound.ejs', {
 		profiles: sameInterestProfiles,
 		currentUser: currentUser
 	})
 }
 
-function list(req, res) {
+// function notFound(req, res) {
+// 	res.status(404).render('notFound.ejs', {
+// 		profiles: sameInterestProfiles,
+// 		currentUser: currentUser
+// 	})
+// }
+
+const list = (req, res) => {
 	res.render('listOfProfiles.ejs', { profiles: profiles })
 }
 
-console.log('localhost:3000')
+express()
+	.use(bodyParser.urlencoded({ extended: true }))
+	.use(
+		session({
+			secret: 'secret-key',
+			resave: false,
+			saveUninitialized: false,
+			name: null
+		})
+	)
+	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
+	.set('view engine', 'ejs')
+	.set('views', 'view')
+	.post('/edit', edit)
+	.post('/', sessionProfile)
+	.get('/', home)
+	.get('/profile/:id', profileID)
+	.get('/edit', form)
+	.get('/list', list)
+	.use(notFound)
+	.listen(process.env.PORT)
+
+console.log('Website can be found at ' + process.env.PORT)

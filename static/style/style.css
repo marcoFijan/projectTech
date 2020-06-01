@@ -67,6 +67,18 @@ nav a {
 	font-size: 0.9em;
 }
 
+a {
+	color: #e7313d;
+	color: var(--accentColor);
+	text-decoration: none;
+	transition: 0.5s all ease-in-out;
+}
+
+a:hover {
+	color: #634193;
+	color: var(--mainColor);
+}
+
 ul {
 	padding: 0;
 }
@@ -287,11 +299,11 @@ aside > div:first-child li:last-child a {
 	color: white;
 }
 
-aside > div:first-child li a {
+/* aside > div:first-child li a {
 	color: #e7313d;
 	color: var(--accentColor);
 	text-decoration: none;
-}
+} */
 
 /* ---------------------------------------------------ASIDERESPONSIVELABEL */
 .asideLabel {

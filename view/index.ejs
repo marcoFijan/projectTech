@@ -8,10 +8,14 @@
   <!-- INCLUDE ASIDE -->
   <%- include('components/aside.ejs') -%>
   <main>
+    <!-- ARTICLE WITH INFORMATION ABOUT THE WEBSITE -->
     <article>
       <h1>Welkom bij Geek Matching!</h1>
       <p>Om het makkelijk te maken, hebben wij alle gebruikers die 1 of meerdere interesses met je delen alvast hieronder gezet. Bezoek gerust de pagina's van die profielen. Wie weet waar het naar toe kan gaan...</p>
+      <p>Om de website een veilige website te maken voor iedereen, hebben we een paar huishoudelijke regels opgezet. Vergeet niet om deze regels aandachtig door te lezen aangezien wij genoodzaakt kunnen zijn om profielen die deze regels overtreden te bannen van deze website</p>
+      <a href="/rules">Regels</a>
     </article>
+    <!-- LIST OF ALL PROFILES WITH MATCHING INTERESTS -->
       <section>
         <h1>Profielen met dezelfde interesses</h1>
         <ul>
@@ -26,6 +30,7 @@
           <% } %>
         </ul>
       </section>
+      <!-- LIST OF ALL ONLINE PROFILES -->
       <section>
         <h1>Online profielen</h1>
         <ul>
@@ -40,6 +45,7 @@
           <% } %>
         </ul>
       </section>
+      <!-- LIST OF ALL PROFILES -->
       <section>
         <h1>Alle profielen</h1>
         <ul>
@@ -52,28 +58,6 @@
               </li>
             </a>
           <% } %>
-        </ul>
-      </section>
-      <section>
-        <h1>Mede One Punch Man fans</h1>
-        <ul>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-        </ul>
-      </section>
-      <section>
-        <h1>Mede Harry Potter fans</h1>
-        <ul>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
-          <li><img src="/static/images/profileImage.svg"></li>
         </ul>
       </section>
       <!-- INCLUDE ASIDE -->
