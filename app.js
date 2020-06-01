@@ -44,7 +44,7 @@ express()
 	.post('/edit', edit2)
 	.post('/', sessionProfile)
 	.get('/', home)
-	.get('/register', register)
+	// .get('/register', register)
 	.get('/about', about)
 	.get('/mp3', mp3)
 	.get('/profile/:id', profileID)
@@ -57,9 +57,13 @@ express()
 // CATCH SESSIONSTATE AT HOMEPAGE
 function home(req, res) {
 	// GO TO HOMEPAGE WHEN SESSION FOUND
-	if (req.session.username) {
+	if (isSignedIn(req)) {
 		console.log(profiles)
-		res.render('index', { profiles: profiles, currentUser: req.session })
+		res.render('index', {
+			profiles: profiles,
+			currentUser: req.session,
+			allProfiles: allProfiles
+		})
 	} // GO TO SIGN-IN PAGE WHEN NO USER/SESSION FOUND
 	else {
 		res.render('sign-in')
@@ -70,7 +74,6 @@ function sessionProfile(req, res) {
 	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
 	profilesToArray().then(profilesArray => {
 		allProfiles = profilesArray
-		console.log(allProfiles)
 		let sessionUser = req.body.sessionProfiles
 		allProfiles.forEach((profile, i) => {
 			if (profile.name === sessionUser) {
@@ -84,29 +87,18 @@ function sessionProfile(req, res) {
 				currentUser = req.session
 				profiles = allProfiles
 				profiles.splice(i, 1)
-				// console.log('currentUser ' + currentUser.name)
 			}
-			// else{
-			//   console.log('Profile not found. Redirecting.....')
-			//   res.redirect('/')
-			// }
 		})
-		console.log(currentUser.interests)
-		currentUser.interests.forEach((interestCurUser, i) => {
-			profiles.forEach((profile, j) => {
-				profile.interests.forEach((interestProfile, k) => {
-					if (interestCurUser === interestProfile) {
-						console.log(
-							'found common interest: ' +
-								interestCurUser +
-								'from profile ' +
-								profile.name
-						)
-						sameInterestProfilesUnsorted.push(profile)
-					}
-				})
-			})
-		})
+		// currentUser.interests.forEach((interestCurUser, i) => {
+		// 	profiles.forEach((profile, j) => {
+		// 		profile.interests.forEach((interestProfile, k) => {
+		// 			if (interestCurUser === interestProfile) {
+		// 				sameInterestProfilesUnsorted.push(profile)
+		// 			}
+		// 		})
+		// 	})
+		// })
+		checkInterests()
 		// SOURCE: https://stackoverflow.com/questions/38206915/filter-out-array-to-have-only-unique-values
 		sameInterestProfiles = sameInterestProfilesUnsorted.filter(function(
 			profile,
@@ -117,9 +109,31 @@ function sessionProfile(req, res) {
 		console.log(sameInterestProfiles)
 		res.render('index', {
 			profiles: sameInterestProfiles,
-			currentUser: currentUser
+			currentUser: currentUser,
+			allProfiles: allProfiles
 		})
 	})
+}
+
+function checkInterests() {
+	currentUser.interests.forEach((interestCurUser, i) => {
+		profiles.forEach((profile, j) => {
+			profile.interests.forEach((interestProfile, k) => {
+				if (interestCurUser === interestProfile) {
+					sameInterestProfilesUnsorted.push(profile)
+				}
+			})
+		})
+	})
+}
+
+function isSignedIn(req) {
+	// CHECK IF A SESSIONUSER HAS BEEN SELECTED
+	if (req.session.username) {
+		return true
+	} else {
+		return false
+	}
 }
 
 function profilesToArray() {
@@ -131,11 +145,6 @@ function profilesToArray() {
 				.toArray()
 		)
 	})
-}
-
-// Make registerpage
-function register(req, res) {
-	res.send('Dit is de registreerpagina')
 }
 
 function find(req, res, next) {
@@ -211,7 +220,7 @@ function edit2(req, res, next) {
 }
 
 function form(req, res) {
-	res.render('edit.ejs', { profiles: profiles })
+	res.render('edit.ejs', { currentUser: currentUser })
 }
 
 // id Can be generated from everything. For instance, it can be an unique idcode from a database
@@ -226,18 +235,21 @@ function profileID(req, res) {
 		profileIDFound
 	)
 
-	function profileIDFound(err, foundProfileID) {
-		console.log(foundProfileID)
+	function profileIDFound(err, foundProfile) {
+		console.log(foundProfile)
 		if (err) {
-			res.redirect('/')
+			res.redirect('/notFound')
+		} else if (foundProfile === null) {
+			res.redirect('/notFound')
 		} else {
 			try {
 				res.render('profile.ejs', {
 					profiles: profiles,
-					currentUser: req.session
+					currentUser: req.session,
+					profile: foundProfile
 				})
 			} catch (error) {
-				res.redirect('/')
+				res.redirect('/notFound')
 			}
 		}
 	}

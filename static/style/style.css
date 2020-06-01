@@ -42,6 +42,7 @@ button {
 	padding: 0.5em;
 	margin: 0.5em 0;
 	text-decoration: none;
+	border: none;
 }
 
 h1 {
@@ -77,6 +78,12 @@ body {
 	max-width: var(--wrapper);
 	margin: 0 auto;
 	/* padding: 0 1em; */
+}
+
+::selection {
+	background: #e7313d;
+	background: var(--accentColor);
+	color: white;
 }
 
 /* ---------------------------------------------------HEADER */
@@ -149,11 +156,15 @@ main {
 	width: 100%;
 }
 
+main > article:first-child p {
+	font-size: 1em;
+}
+
 main > section,
 main > article {
 	background: white;
 	background: var(--contentBgColor);
-	padding: 0 1.5em;
+	padding: 0 1.5em 1em 1.5em;
 }
 
 main > section > ul {
@@ -254,6 +265,7 @@ aside > div:first-child li a {
 	text-decoration: none;
 }
 
+/* ---------------------------------------------------ASIDERESPONSIVELABEL */
 .asideLabel {
 	display: none;
 	position: fixed;
@@ -275,6 +287,7 @@ aside > div:first-child li a {
 	display: none;
 }
 
+/* ---------------------------------------------------PROFILEPAGE */
 /* profile-page */
 .profileContent article {
 	padding-bottom: 4em;
@@ -301,7 +314,6 @@ aside > div:first-child li a {
 	flex-wrap: wrap;
 	list-style: none;
 	padding: 0;
-	/* padding: 0 1em; */
 }
 
 .profileContent .interests li {
@@ -330,6 +342,42 @@ aside > div:first-child li a {
 	border: none;
 }
 
+/* ---------------------------------------------------EDIT PROFILE */
+.updateProfileForm {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	width: 60%;
+	min-width: 13em;
+}
+
+.updateProfileForm input,
+.updateProfileForm textarea {
+	display: block;
+	width: 100%;
+	margin-bottom: 1.5em;
+	border: none;
+	border-bottom: 0.1em solid var(--bgColor);
+	color: var(--mainColor);
+	transition: 1s all ease-in;
+}
+
+.updateProfileForm label {
+	margin-bottom: 0.5em;
+}
+
+.updateProfileForm input:focus,
+.updateProfileForm textarea:focus {
+	border-bottom: 0.1em solid var(--mainColor);
+}
+
+input[name='gender'] {
+	width: 3em;
+	/* display: inline-block; */
+	background: red;
+}
+
+/* ---------------------------------------------------FOOTER */
 footer {
 	background: #634193;
 	background: var(--mainColor);
@@ -343,6 +391,7 @@ footer p {
 	margin: 0;
 }
 
+/* ---------------------------------------------------NOT FOUND PAGE (STATUS:404) */
 #notFoundPage h2 {
 	text-align: center;
 }
@@ -364,7 +413,9 @@ footer p {
 	margin: 0 auto;
 }
 
+/* ---------------------------------------------------RESPONSIVE */
 @media only screen and (max-width: 800px) {
+	/* ---------------------------------------------------ASIDE */
 	aside {
 		left: -19em;
 		margin-top: 6.8em;
@@ -395,10 +446,12 @@ footer p {
 		left: 11em;
 	}
 
+	/* ---------------------------------------------------MAINCONTENT */
 	main {
 		padding: 8em 0 0 0;
 	}
 
+	/* ---------------------------------------------------HEADER */
 	header {
 		flex-direction: column;
 		justify-content: center;

@@ -7,16 +7,37 @@
   <!-- INCLUDE ASIDE -->
   <%- include('components/aside.ejs') -%>
   <main>
-    <h1>Profiel aanpassen</h1>
-    <section>
+    <article>
+      <h1>Profiel aanpassen</h1>
       <h2>Wie ben jij?</h2>
-      <form action=/ method=post>
-        <label>Naam <input name=name></label>
-        <label>Leeftijd <input name=age></label>
-        <label>Interesse <input name=interests></label>
-        <label>Locatie <input name=location></label>
-        <button>Update profiel</button>
+      <form action="/edit" method="POST" class="updateProfileForm">
+        <label for="name">Naam</label>
+        <input type="text" name=name id="name" required>
+
+        <label for="age">Leeftijd</label>
+        <input type="text" name=age id="age" required>
+
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Man</label>
+
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label>
+
+        <input type="radio" id="other" name="gender" value="other">
+        <label for="other">Anders</label>
+
+        <!-- <label for="gender">Gender</label>
+        <input type="text" name=gender id="gender"> -->
+
+        <label for="location">Locatie</label>
+        <input type="text" name=location id="location" required>
+
+        <label for="about">Over mezelf</label>
+        <textarea name="about" id="about" required></textarea>
+
+        <input class="CTA-Button" type="submit" value="Update profiel" required>
+        <!-- <button class="CTA-Button">Update profiel</button> -->
       </form>
-    </section>
+    </article>
   </main>
 </body>
