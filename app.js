@@ -28,6 +28,7 @@ let profiles //LIST OF PROFILES EXCLUDING THE CURRENT USER
 let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
 let onlineProfiles = [] //LIST OF PROFILES WHO ARE ONLINE
+let currentUserInterests = []
 
 // express()
 // 	.use(bodyParser.urlencoded({ extended: true }))
@@ -113,6 +114,7 @@ const sessionProfile = (req, res) => {
 
 const checkInterests = () => {
 	currentUser.interests.forEach(interestCurUser => {
+		currentUserInterests.push(interestCurUser)
 		profiles.forEach(profile => {
 			profile.interests.forEach(interestProfile => {
 				if (interestCurUser === interestProfile) {
@@ -148,6 +150,20 @@ const profilesToArray = () => {
 				.find()
 				.toArray()
 		)
+	})
+}
+
+const updateDatabase = () => {
+	mongoClient.connect(uri, { useUnifiedTopology: true }, function(
+		err,
+		clientDB
+	) {
+		if (err) {
+			console.log('I AM ERROR: ' + err)
+		} else {
+			localDB = clientDB.db(process.env.DB_NAME)
+			console.log('Database updated')
+		}
 	})
 }
 
@@ -336,14 +352,52 @@ const list = (req, res) => {
 	res.render('listOfProfiles.ejs', { profiles: profiles })
 }
 
+const editInterests = (req, res) => {
+	res.render('editInterests.ejs', {
+		profiles: profiles,
+		currentUser: currentUser,
+		currentUserInterests: currentUserInterests
+	})
+}
+
+const removePage = (req, res) => {
+	res.render('remove.ejs', {
+		allProfiles: allProfiles,
+		currentUser: currentUser
+	})
+}
+
+const remove = (req, res) => {
+	let profileID = req.body._id
+
+	localDB.collection('profiles').deleteOne(
+		{
+			_id: mongo.ObjectID(profileID)
+		},
+		deleteProfile
+	)
+
+	function deleteProfile(err) {
+		if (err) {
+			res.redirect('/notFound')
+		} else {
+			updateDatabase()
+			sessionProfile(req, res)
+		}
+	}
+}
+
+const add = (req, res) => {
+	res.render('add.ejs', { allProfiles: allProfiles })
+}
+
 express()
 	.use(bodyParser.urlencoded({ extended: true }))
 	.use(
 		session({
-			secret: 'secret-key',
+			secret: 'secret-key', // COMPUTES THE HASH: NEEDS A STRING OR SESSION ACCESS WOULD BE DENIED
 			resave: false,
-			saveUninitialized: false,
-			name: null
+			saveUninitialized: false // DON'T CREATE A NEW A NEW SESSION WHEN ADDING NEW CONTENT LIKE SESSION.NAME: ...
 		})
 	)
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
@@ -351,10 +405,14 @@ express()
 	.set('views', 'view')
 	.post('/edit', edit)
 	.post('/', sessionProfile)
+	.post('/remove', remove)
 	.get('/', home)
 	.get('/profile/:id', profileID)
 	.get('/edit', form)
 	.get('/list', list)
+	.get('/editInterests', editInterests)
+	.get('/remove', removePage)
+	.get('/add', add)
 	.use(notFound)
 	.listen(process.env.PORT)
 

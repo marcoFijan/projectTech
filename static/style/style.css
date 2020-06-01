@@ -71,7 +71,7 @@ a {
 	color: #e7313d;
 	color: var(--accentColor);
 	text-decoration: none;
-	transition: 0.5s all ease-in-out;
+	transition: 0.5s all ease-in;
 }
 
 a:hover {
@@ -422,6 +422,26 @@ input[name='gender'] {
 
 .genderLabel {
 	width: 80%;
+}
+
+.removeInterest {
+	background: var(--accentColor);
+	color: white;
+	border: none;
+}
+
+.removeProfileList {
+	display: flex;
+	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(13em, 1fr));
+	list-style: none;
+	grid-gap: 1em;
+}
+
+.removeProfileList li {
+	border: 1px dotted #634193;
+	border: 1px dotted var(--mainColor);
 }
 
 /* ---------------------------------------------------FOOTER */
