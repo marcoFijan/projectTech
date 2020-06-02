@@ -25,42 +25,25 @@ mongoClient.connect(uri, { useUnifiedTopology: true }, function(err, clientDB) {
 let allProfiles //LIST OF ALL PROFILES FROM THE DATABASE
 let currentUser //OBJECT OF CURRENT USER / SESSION
 let profiles //LIST OF PROFILES EXCLUDING THE CURRENT USER
-let sameInterestProfilesUnsorted = [] //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
+let sameInterestProfilesUnsorted //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
-let onlineProfiles = [] //LIST OF PROFILES WHO ARE ONLINE
+let onlineProfiles //LIST OF PROFILES WHO ARE ONLINE
 let currentUserInterests = []
 
-// express()
-// 	.use(bodyParser.urlencoded({ extended: true }))
-// 	.use(
-// 		session({
-// 			secret: 'secret-key',
-// 			resave: false,
-// 			saveUninitialized: false,
-// 			name: null
-// 		})
-// 	)
-// 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
-// 	.set('view engine', 'ejs')
-// 	.set('views', 'view')
-// 	.post('/edit', edit)
-// 	.post('/', sessionProfile)
-// 	.get('/', home)
-// 	// .get('/register', register)
-// 	// .get('/about', about)
-// 	// .get('/mp3', mp3)
-// 	.get('/profile/:id', profileID)
-// 	.get('/edit', form)
-// 	.get('/list', list)
-// 	.get('/find', find)
-// 	.use(notFound)
-// 	.listen(3000)
+// CHECK IF USER IS SIGNED IN
+const isSignedIn = req => {
+	// CHECK IF A SESSIONUSER HAS BEEN SELECTED
+	if (req.session.username) {
+		return true
+	} else {
+		return false
+	}
+}
 
 // CATCH SESSIONSTATE AT HOMEPAGE
-function home(req, res) {
+const home = (req, res) => {
 	// GO TO HOMEPAGE WHEN SESSION FOUND
 	if (isSignedIn(req)) {
-		console.log(profiles)
 		res.render('index', {
 			profiles: profiles,
 			currentUser: req.session,
@@ -73,6 +56,7 @@ function home(req, res) {
 	}
 }
 
+// SETUP SESSION / UPDATE SESSION
 const sessionProfile = (req, res) => {
 	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
 	profilesToArray().then(profilesArray => {
@@ -82,7 +66,6 @@ const sessionProfile = (req, res) => {
 			if (profile.name === sessionUser) {
 				console.log(sessionUser + ': im in!')
 				req.session._id = profile._id
-				console.log(profile._id)
 				req.session.username = profile.name
 				req.session.age = profile.age
 				req.session.gender = profile.gender
@@ -113,6 +96,7 @@ const sessionProfile = (req, res) => {
 }
 
 const checkInterests = () => {
+	sameInterestProfilesUnsorted = []
 	currentUser.interests.forEach(interestCurUser => {
 		currentUserInterests.push(interestCurUser)
 		profiles.forEach(profile => {
@@ -125,7 +109,9 @@ const checkInterests = () => {
 	})
 }
 
+// CHECK WHICH USERS ARE ONLINE
 const checkOnlineStatus = () => {
+	onlineProfiles = []
 	profiles.forEach(profile => {
 		if (profile.onlineStatus === 'online') {
 			onlineProfiles.push(profile)
@@ -133,16 +119,9 @@ const checkOnlineStatus = () => {
 	})
 }
 
-const isSignedIn = req => {
-	// CHECK IF A SESSIONUSER HAS BEEN SELECTED
-	if (req.session.username) {
-		return true
-	} else {
-		return false
-	}
-}
-
+// SAVE PROFILES IN LOCAL ARRAY
 const profilesToArray = () => {
+	// CREATE A NEW PROMISE; THIS MUST FINISH FIRST BEFORE CONTINUEING WITH THEN
 	return new Promise(resolve => {
 		resolve(
 			localDB
@@ -266,7 +245,11 @@ const edit = (req, res) => {
 // }
 
 const form = (req, res) => {
-	res.render('edit.ejs', { currentUser: currentUser })
+	if (isSignedIn(req)) {
+		res.render('edit.ejs', { currentUser: currentUser })
+	} else {
+		res.render('sign-in')
+	}
 }
 
 // function form(req, res) {
@@ -274,14 +257,18 @@ const form = (req, res) => {
 // }
 
 const profileID = (req, res) => {
-	let profileID = req.params.id
+	if (isSignedIn(req)) {
+		let profileID = req.params.id
 
-	localDB.collection('profiles').findOne(
-		{
-			_id: mongo.ObjectID(profileID)
-		},
-		profileIDFound
-	)
+		localDB.collection('profiles').findOne(
+			{
+				_id: mongo.ObjectID(profileID)
+			},
+			profileIDFound
+		)
+	} else {
+		res.render('sign-in')
+	}
 
 	function profileIDFound(err, foundProfile) {
 		console.log(foundProfile)
@@ -303,37 +290,6 @@ const profileID = (req, res) => {
 	}
 }
 
-// function profileID(req, res) {
-// 	let profileID = req.params.id
-// 	// let profileID = req.query
-//
-// 	localDB.collection('profiles').findOne(
-// 		{
-// 			_id: mongo.ObjectID(profileID)
-// 		},
-// 		profileIDFound
-// 	)
-//
-// 	function profileIDFound(err, foundProfile) {
-// 		console.log(foundProfile)
-// 		if (err) {
-// 			res.redirect('/notFound')
-// 		} else if (foundProfile === null) {
-// 			res.redirect('/notFound')
-// 		} else {
-// 			try {
-// 				res.render('profile.ejs', {
-// 					profiles: profiles,
-// 					currentUser: req.session,
-// 					profile: foundProfile
-// 				})
-// 			} catch (error) {
-// 				res.redirect('/notFound')
-// 			}
-// 		}
-// 	}
-// }
-
 const notFound = (req, res) => {
 	res.status(404).render('notFound.ejs', {
 		profiles: sameInterestProfiles,
@@ -341,30 +297,27 @@ const notFound = (req, res) => {
 	})
 }
 
-// function notFound(req, res) {
-// 	res.status(404).render('notFound.ejs', {
-// 		profiles: sameInterestProfiles,
-// 		currentUser: currentUser
-// 	})
-// }
-
-const list = (req, res) => {
-	res.render('listOfProfiles.ejs', { profiles: profiles })
-}
-
-const editInterests = (req, res) => {
-	res.render('editInterests.ejs', {
-		profiles: profiles,
-		currentUser: currentUser,
-		currentUserInterests: currentUserInterests
-	})
+const interests = (req, res) => {
+	if (isSignedIn(req)) {
+		res.render('editInterests.ejs', {
+			profiles: profiles,
+			currentUser: currentUser,
+			currentUserInterests: currentUserInterests
+		})
+	} else {
+		res.render('sign-in')
+	}
 }
 
 const removePage = (req, res) => {
-	res.render('remove.ejs', {
-		allProfiles: allProfiles,
-		currentUser: currentUser
-	})
+	if (isSignedIn(req)) {
+		res.render('remove.ejs', {
+			allProfiles: allProfiles,
+			currentUser: currentUser
+		})
+	} else {
+		res.render('sign-in')
+	}
 }
 
 const remove = (req, res) => {
@@ -387,10 +340,47 @@ const remove = (req, res) => {
 	}
 }
 
-const add = (req, res) => {
-	res.render('add.ejs', { allProfiles: allProfiles })
+const addPage = (req, res) => {
+	if (isSignedIn(req)) {
+		res.render('add.ejs', {
+			allProfiles: allProfiles,
+			currentUser: currentUser
+		})
+	} else {
+		res.render('sign-in')
+	}
 }
 
+const add = (req, res, next) => {
+	let interestArray = []
+	interestArray.push(req.body.interest)
+
+	localDB.collection('profiles').insertOne(
+		{
+			name: req.body.name,
+			age: parseInt(req.body.age), //CONVERT TO INTEGER
+			gender: req.body.gender,
+			onlineStatus: 'offline',
+			interests: interestArray,
+			location: req.body.location,
+			about: req.body.about
+		},
+		insertProfile
+	)
+
+	function insertProfile(err, foundData) {
+		if (err) {
+			next(err)
+		} else {
+			updateDatabase()
+			sessionProfile(req, res)
+			console.log('trying pushing data...')
+			res.redirect('/profile/' + foundData.insertedId)
+		}
+	}
+}
+
+// SETUP EXPRESS
 express()
 	.use(bodyParser.urlencoded({ extended: true }))
 	.use(
@@ -401,19 +391,19 @@ express()
 		})
 	)
 	.use('/static', express.static('static')) //Here you link to the folder static. So when /static is called in html, express will use the folder static. You can name the folder whatever you want as long as you change the express.static(foldername).
-	.set('view engine', 'ejs')
-	.set('views', 'view')
-	.post('/edit', edit)
-	.post('/', sessionProfile)
-	.post('/remove', remove)
-	.get('/', home)
-	.get('/profile/:id', profileID)
-	.get('/edit', form)
-	.get('/list', list)
-	.get('/editInterests', editInterests)
-	.get('/remove', removePage)
-	.get('/add', add)
-	.use(notFound)
+	.set('view engine', 'ejs') // SET TEMAPLATE ENGINE
+	.set('views', 'view') // SET FOLDER WHERE TEMPLATES ARE LOCATED
+	.post('/edit', edit) // CALL FUNCTION TO UPDATE YOUR OWN PROFILE
+	.post('/', sessionProfile) // SETUP SESSION WITH ITS LOCAL VARIABLES
+	.post('/remove', remove) // CALL FUNCTION TO REMOVE THE PROFILE ON ROUTE /REMOVE
+	.post('/add', add) // CALL FUNCTION TO ADD THE PROFILE ON ROUTE /ADD
+	.get('/', home) // LOAD INDEX TEMPLATE
+	.get('/profile/:id', profileID) // UNIQUE PROFILE PAGE BASED ON ITS ID
+	.get('/edit', form) // LOAD PAGE WITH FORM TO EDIT YOUR OWN PROFILE
+	.get('/interests', interests) // LOAD PAGE TO LOOK AT YOUR INTERESTS
+	.get('/remove', removePage) // LOAD PAGE WHERE YOU CAN REMOVE PAGES
+	.get('/add', addPage) // LOAD PAGE TO ADD A PROFILE
+	.use(notFound) // LOAD A NOTFOUND PAGE IF ROUTE NOT FOUND
 	.listen(process.env.PORT)
 
 console.log('Website can be found at ' + process.env.PORT)

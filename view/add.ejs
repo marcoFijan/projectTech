@@ -10,7 +10,10 @@
     <article>
       <h1>Profiel aanpassen van</h1>
       <h2>Wie ben jij?</h2>
-      <form action="/edit" method="POST" class="profileForm">
+      <form action="/add" method="POST" class="profileForm">
+        <label for="name">Naam</label>
+        <input type="text" name=name id="name" required>
+
         <label for="age">Leeftijd</label>
         <input type="number" name=age id="age" required>
 
@@ -21,6 +24,9 @@
         <label class='genderLabel' for="female">Female</label>
         <input type="radio" id="other" name="gender" value="a" checked="checked">
         <label class='genderLabel' for="other">Anders</label>
+
+        <label for="interest">Interesse</label>
+        <input type="text" name=interest id="interest" required>
 
         <label for="location">Locatie</label>
         <input type="text" name=location id="location" required>

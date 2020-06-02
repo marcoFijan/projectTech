@@ -383,7 +383,7 @@ aside > div:first-child li:last-child a {
 }
 
 /* ---------------------------------------------------EDIT PROFILE */
-.updateProfileForm {
+.profileForm {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -391,27 +391,32 @@ aside > div:first-child li:last-child a {
 	min-width: 13em;
 }
 
-.updateProfileForm input,
-.updateProfileForm textarea {
+.profileForm input,
+.profileForm textarea {
 	display: block;
 	width: 100%;
 	margin-bottom: 1.5em;
 	border: none;
 	border-bottom: 0.1em solid var(--bgColor);
 	color: var(--mainColor);
-	transition: 1s all ease-in;
+	transition: 0.3s all ease-in;
 }
 
-.updateProfileForm label {
+.profileForm label {
 	margin-bottom: 0.5em;
 }
 
-.updateProfileForm input:focus,
-.updateProfileForm textarea:focus {
+.profileForm input:focus,
+.profileForm textarea:focus {
 	border-bottom: 0.1em solid var(--mainColor);
 }
 
-.updateProfileForm p {
+.profileForm input:invalid,
+.profileForm textarea:invalid {
+	color: var(--accentColor);
+}
+
+.profileForm p {
 	display: block;
 	width: 100%;
 }
