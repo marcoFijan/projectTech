@@ -1,6 +1,5 @@
 // REQUIRE VARIABLES
 const express = require('express')
-const slug = require('slug')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 
