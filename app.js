@@ -54,6 +54,19 @@ const home = (req, res) => {
 	}
 }
 
+// SAVE PROFILES IN LOCAL ARRAY
+const profilesToArray = () => {
+	// CREATE A NEW PROMISE; THIS MUST FINISH FIRST BEFORE CONTINUEING WITH THEN
+	return new Promise(resolve => {
+		resolve(
+			localDB
+				.collection('profiles')
+				.find()
+				.toArray()
+		)
+	})
+}
+
 // SETUP SESSION / UPDATE SESSION
 const sessionProfile = (req, res) => {
 	// SAVE ALL PROFILES FROM DATABASE IN AN ARRAY
@@ -77,13 +90,6 @@ const sessionProfile = (req, res) => {
 		})
 		checkInterests() //CALL FUNCTION TO CHECK COMMON INTERESTS
 		checkOnlineStatus() //CALL FUNCTION TO CHECK WHICH PROFILES ARE ONLINE
-		// SOURCE: https://stackoverflow.com/questions/38206915/filter-out-array-to-have-only-unique-values
-		sameInterestProfiles = sameInterestProfilesUnsorted.filter(function(
-			profile,
-			l
-		) {
-			return sameInterestProfilesUnsorted.indexOf(profile) == l
-		})
 		res.render('index', {
 			profiles: sameInterestProfiles,
 			currentUser: currentUser,
@@ -104,6 +110,13 @@ const checkInterests = () => {
 			})
 		})
 	})
+	// SOURCE: https://stackoverflow.com/questions/38206915/filter-out-array-to-have-only-unique-values
+	sameInterestProfiles = sameInterestProfilesUnsorted.filter(function(
+		profile,
+		l
+	) {
+		return sameInterestProfilesUnsorted.indexOf(profile) == l
+	})
 }
 
 // CHECK WHICH USERS ARE ONLINE
@@ -113,19 +126,6 @@ const checkOnlineStatus = () => {
 		if (profile.onlineStatus === 'online') {
 			onlineProfiles.push(profile)
 		}
-	})
-}
-
-// SAVE PROFILES IN LOCAL ARRAY
-const profilesToArray = () => {
-	// CREATE A NEW PROMISE; THIS MUST FINISH FIRST BEFORE CONTINUEING WITH THEN
-	return new Promise(resolve => {
-		resolve(
-			localDB
-				.collection('profiles')
-				.find()
-				.toArray()
-		)
 	})
 }
 
@@ -142,45 +142,6 @@ const updateDatabase = () => {
 		}
 	})
 }
-
-// function find(req, res, next) {
-// 	localDB
-// 		.collection('profiles')
-// 		.find()
-// 		.toArray(profilesArray)
-//
-// 	function profilesArray(err, profilesArray) {
-// 		if (err) {
-// 			next(err)
-// 		} else {
-// 			res.render('listOfProfiles', { profiles: profilesArray })
-// 		}
-// 	}
-// }
-
-// Make an aboutpage
-// function about(req, res) {
-// 	if (req.url === '/about') {
-// 		res.status(200).send('<h1>hi</h1>')
-// 		res.end('this is my website\n')
-// 	} else {
-// 		res.end('Hello World!\n')
-// 	}
-// }
-
-// Play sound when accessing /mp3
-// function mp3(req, res) {
-// 	res.sendfile(__dirname + '/static/audio/waaah.mp3')
-// 	console.log('Why no Wah in smash bros?')
-// }
-
-// function signIn(req, res) {
-// 	res.render('sign-in')
-// }
-
-// function profile(req, res) {
-// 	res.render('profile')
-// }
 
 const edit = (req, res) => {
 	localDB.collection('profiles').updateOne(
@@ -200,46 +161,6 @@ const edit = (req, res) => {
 	res.redirect('/profile/' + currentUser._id)
 }
 
-// function edit(req, res) {
-// 	localDB.collection('profiles').updateOne(
-// 		{
-// 			_id: mongo.ObjectID(currentUser._id)
-// 		},
-// 		{
-// 			$set: {
-// 				name: req.body.name,
-// 				age: parseInt(req.body.age), //CONVERT TO INTEGER
-// 				gender: req.body.gender,
-// 				location: req.body.location,
-// 				about: req.body.about
-// 			}
-// 		}
-// 	)
-// 	sessionProfile(req, res)
-// 	res.redirect('/')
-// }
-
-// function edit2(req, res, next) {
-// 	localDB.collection('profiles').insertOne(
-// 		{
-// 			name: req.body.name,
-// 			age: req.body.age,
-// 			interests: req.body.interests,
-// 			location: req.body.location
-// 		},
-// 		insertProfile
-// 	)
-//
-// 	function insertProfile(err, foundData) {
-// 		if (err) {
-// 			next(err)
-// 		} else {
-// 			console.log('trying pushing data...')
-// 			res.redirect('/profile/' + foundData.insertedId)
-// 		}
-// 	}
-// }
-
 const form = (req, res) => {
 	if (isSignedIn(req)) {
 		res.render('edit.ejs', { currentUser: currentUser })
@@ -247,10 +168,6 @@ const form = (req, res) => {
 		res.render('sign-in')
 	}
 }
-
-// function form(req, res) {
-// 	res.render('edit.ejs', { currentUser: currentUser })
-// }
 
 const profileID = (req, res) => {
 	if (isSignedIn(req)) {
