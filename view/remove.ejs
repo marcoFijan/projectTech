@@ -20,7 +20,7 @@
         </ul>
         <form action="/remove" method="POST">
           <label for="profileList">Profiel ID:</label>
-          <input id="profileList"  type="text" list="profileID" name="_id" placeholder="Voeg een id toe om het profiel te verwijderen">
+          <input id="profileList"  type="text" list="profileID" name="_id" autocomplete="off" placeholder="Voeg een id toe om het profiel te verwijderen">
           <datalist id="profileID">
             <% for (var i = 0; i < allProfiles.length; i++) { %>
               <option value=" <%= allProfiles[i]._id %>">
