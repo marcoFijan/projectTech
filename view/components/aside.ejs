@@ -2,13 +2,13 @@
 <label class="asideLabel" for="asideButton">></label>
 <aside>
   <div>
-    <div>
+    <a href="/profile/<%= currentUser._id %>">
       <img class="profileImage" src="/static/images/marco.jpg">
       <div>
         <p class="profileName"><%= currentUser.username %></p>
         <p class="onlineStatus">Online</p>
       </div>
-    </div>
+    </a>
     <ul>
       <li><a href="/edit">Profiel bewerken</a></li>
       <li><a href="/interests">Mijn interesses en hobby's</a></li>

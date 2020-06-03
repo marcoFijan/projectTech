@@ -27,7 +27,6 @@ let profiles //LIST OF PROFILES EXCLUDING THE CURRENT USER
 let sameInterestProfilesUnsorted //LIST OF PROFILES WITH THE SAME INTERESTS WITH DOUBLE PROFILES
 let sameInterestProfiles //LIST OF PROFILES WITH THE SAME INTERESTS
 let onlineProfiles //LIST OF PROFILES WHO ARE ONLINE
-let currentUserInterests = []
 
 // CHECK IF USER IS SIGNED IN
 const isSignedIn = req => {
@@ -97,7 +96,6 @@ const sessionProfile = (req, res) => {
 const checkInterests = () => {
 	sameInterestProfilesUnsorted = []
 	currentUser.interests.forEach(interestCurUser => {
-		currentUserInterests.push(interestCurUser)
 		profiles.forEach(profile => {
 			profile.interests.forEach(interestProfile => {
 				if (interestCurUser === interestProfile) {
@@ -191,11 +189,10 @@ const edit = (req, res) => {
 		},
 		{
 			$set: {
-				name: req.body.name,
-				age: parseInt(req.body.age), //CONVERT TO INTEGER
 				gender: req.body.gender,
 				location: req.body.location,
-				about: req.body.about
+				about: req.body.about,
+				age: parseInt(req.body.age) //CONVERT TO INTEGER
 			}
 		}
 	)
@@ -300,8 +297,7 @@ const interests = (req, res) => {
 	if (isSignedIn(req)) {
 		res.render('editInterests.ejs', {
 			profiles: profiles,
-			currentUser: currentUser,
-			currentUserInterests: currentUserInterests
+			currentUser: currentUser
 		})
 	} else {
 		res.render('sign-in')

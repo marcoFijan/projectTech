@@ -33,18 +33,6 @@ button {
 	font-weight: 900;
 }
 
-.CTA-Button {
-	background: #f09a3c;
-	background: var(--accentColor3);
-	color: white;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 900;
-	padding: 0.5em;
-	margin: 0.5em 0;
-	text-decoration: none;
-	border: none;
-}
-
 h1 {
 	background: #634193;
 	background: var(--mainColor);
@@ -77,6 +65,26 @@ a {
 a:hover {
 	color: #634193;
 	color: var(--mainColor);
+}
+
+.CTA-Button {
+	background: #f09a3c;
+	background: var(--accentColor3);
+	display: inline-block;
+	color: white;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 900;
+	padding: 0.5em;
+	margin: 0.5em 0;
+	text-decoration: none;
+	text-align: center;
+	border: none;
+	transition: 0.3s all ease-in;
+}
+
+.CTA-Button:hover {
+	color: white;
+	transform: scale(1.1);
 }
 
 ul {
@@ -256,12 +264,12 @@ aside > div {
 	box-sizing: border-box;
 }
 
-aside div div:first-child {
+aside div a {
 	display: flex;
 	align-items: flex-end;
 }
 
-aside div div:first-child > .profileImage {
+aside div a > .profileImage {
 	object-fit: cover;
 	border-radius: 100%;
 	width: 4em;
@@ -274,6 +282,7 @@ aside > div:first-child .profileName {
 	font-family: 'Roboto', sans-serif;
 	font-weight: 900;
 	margin-bottom: 0;
+	transition: 0.3s all ease-in-out;
 }
 
 aside > div:first-child .onlineStatus {
@@ -297,6 +306,11 @@ aside > div:first-child li:last-child {
 
 aside > div:first-child li:last-child a {
 	color: white;
+}
+
+aside a:hover .profileName {
+	color: var(--mainColor);
+	text-decoration: underline;
 }
 
 /* aside > div:first-child li a {
@@ -362,15 +376,10 @@ aside > div:first-child li:last-child a {
 	border: 0.1em solid #634193;
 	color: #634193;
 	border: 0.1em solid var(--mainColor);
+	color: #634193;
 	color: var(--mainColor);
 	margin: 0.3em;
 	background: white;
-}
-
-.profileContent .interests li:first-child {
-	background: #634193;
-	background: var(--mainColor);
-	color: white;
 }
 
 .profileContent iframe {
@@ -397,9 +406,19 @@ aside > div:first-child li:last-child a {
 	width: 100%;
 	margin-bottom: 1.5em;
 	border: none;
+	border-bottom: 0.1em solid #e6e4ed;
 	border-bottom: 0.1em solid var(--bgColor);
+	color: #634193;
 	color: var(--mainColor);
 	transition: 0.3s all ease-in;
+}
+
+.profileForm input:last-child {
+	border: none;
+	color: white;
+	width: auto;
+	display: inline-block;
+	font-size: 1em;
 }
 
 .profileForm label {
@@ -408,11 +427,13 @@ aside > div:first-child li:last-child a {
 
 .profileForm input:focus,
 .profileForm textarea:focus {
+	border-bottom: 0.1em solid #634193;
 	border-bottom: 0.1em solid var(--mainColor);
 }
 
 .profileForm input:invalid,
 .profileForm textarea:invalid {
+	color: #e7313d;
 	color: var(--accentColor);
 }
 
@@ -430,6 +451,7 @@ input[name='gender'] {
 }
 
 .removeInterest {
+	background: #e7313d;
 	background: var(--accentColor);
 	color: white;
 	border: none;
@@ -447,6 +469,28 @@ input[name='gender'] {
 .removeProfileList li {
 	border: 1px dotted #634193;
 	border: 1px dotted var(--mainColor);
+}
+
+.interestList {
+	display: flex;
+	flex-wrap: wrap;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+	list-style: none;
+	grid-gap: 1em;
+	text-align: center;
+}
+
+.interestList li {
+	padding: 0.5em;
+	margin: 0.1em;
+	border: 1px dotted #634193;
+	border: 1px dotted var(--mainColor);
+}
+
+.interestList h2 {
+	padding: 0;
+	margin: 0;
 }
 
 /* ---------------------------------------------------FOOTER */

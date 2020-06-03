@@ -1,88 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="static/style/style.css">
-  <title>Geed Matching: De datingsite voor geeks!</title>
-</head>
-<body id="homepage">
-  <header>
-    <a href="index.html"><img src="static/images/logo.svg"></a>
-    <nav>
-      <ul>
-        <li><a href="#"><img src="static/images/friendsIcon.svg">Zoek profielen</a></li>
-        <li><a href="#"><img src="static/images/matchingGameIcon.svg">Matching Game</a></li>
-        <li><a href="#"><img src="static/images/matchesIcon.svg">Matches</a></li>
-        <li><a href="#"><img src="static/images/messagesIcon.svg">Berichten</a></li>
-      </ul>
-    </nav>
-  </header>
-  <aside>
-    <div>
-      <div>
-        <img class="profileImage" src="static/images/marco.jpg">
-        <div>
-          <p class="profileName">Marco</p>
-          <p class="onlineStatus">Online</p>
-        </div>
-      </div>
-      <ul>
-        <li><a href="#">Profiel bewerken</a></li>
-        <li><a href="#">Mijn interesses en hobby's</a></li>
-        <li><a href="#">PREMIUM+</a></li>
-      </ul>
-    </div>
-    <div>
-      <h2>Chatten</h2>
-      <ul>
-        <li>chat1</li>
-        <li>chat2</li>
-        <li>chat3</li>
-      </ul>
-    </div>
-  </aside>
-  <main>
-    <!-- sidebar -->
-    <!-- content -->
-      <section>
-        <h1>Mede Nintendo fans</h1>
-        <ul>
-          <li><a href="profile.html"><img src="static/images/profileImage.svg"></a></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-        </ul>
-      </section>
-      <section>
-        <h1>Mede One Punch Man fans</h1>
-        <ul>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-        </ul>
-      </section>
-      <section>
-        <h1>Mede Harry Potter fans</h1>
-        <ul>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-          <li><img src="static/images/profileImage.svg"></li>
-        </ul>
-      </section>
-  </main>
-  <footer>
-
-  </footer>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;900&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="stylesheet" href="static/style/style.css" />
+		<title>Geed Matching: De datingsite voor geeks!</title>
+	</head>
+	<body id="homepage">
+		<header>
+			<a href="index.html"><img src="static/images/logo.svg"/></a>
+			<nav>
+				<ul>
+					<li>
+						<a href="#"
+							><img src="static/images/friendsIcon.svg" />Zoek profielen</a
+						>
+					</li>
+					<li>
+						<a href="#"
+							><img src="static/images/matchingGameIcon.svg" />Matching Game</a
+						>
+					</li>
+					<li>
+						<a href="#"><img src="static/images/matchesIcon.svg" />Matches</a>
+					</li>
+					<li>
+						<a href="#"
+							><img src="static/images/messagesIcon.svg" />Berichten</a
+						>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<input type="checkbox" id="asideButton" />
+		<label class="asideLabel" for="asideButton">></label>
+		<aside>
+			<div>
+				<div>
+					<img class="profileImage" src="static/images/marco.jpg" />
+					<div>
+						<p class="profileName">Marco</p>
+						<p class="onlineStatus">Online</p>
+					</div>
+				</div>
+				<ul>
+					<li><a href="edit.html">Profiel bewerken</a></li>
+					<li><a href="interests.html">Mijn interesses en hobby's</a></li>
+					<li><a href="remove.html">Verwijder profielen</a></li>
+					<li><a href="add.html">Profielen toevoegen</a></li>
+					<li><a href="#" class="CTA-Button">PREMIUM+</a></li>
+				</ul>
+			</div>
+			<div>
+				<h2>Chatten</h2>
+				<ul>
+					<li>chat1</li>
+					<li>chat2</li>
+					<li>chat3</li>
+				</ul>
+			</div>
+		</aside>
+		<main>
+			<!-- sidebar -->
+			<!-- content -->
+			<article>
+				<h1>Welkom bij Geek Matching!</h1>
+				<p>
+					Om het makkelijk te maken, hebben wij alle gebruikers die 1 of
+					meerdere interesses met je delen alvast hieronder gezet. Bezoek gerust
+					de pagina's van die profielen. Wie weet waar het naar toe kan gaan...
+				</p>
+				<p>
+					Om de website een veilige website te maken voor iedereen, hebben we
+					een paar huishoudelijke regels opgezet. Vergeet niet om deze regels
+					aandachtig door te lezen aangezien wij genoodzaakt kunnen zijn om
+					profielen die deze regels overtreden te bannen van deze website
+				</p>
+				<a href="/rules">Regels</a>
+			</article>
+			<section>
+				<h1>Profielen met dezelfde Interesse</h1>
+				<ul>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Danie, 24</h2>
+							<p>Opmeer</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Karin, 19</h2>
+							<p>Opmeer</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Lisa, 22</h2>
+							<p>Bleiswijk</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Bas, 24</h2>
+							<p>Berkel</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Rudolf, 21</h2>
+							<p>Tilburg</p>
+						</li>
+					</a>
+				</ul>
+			</section>
+			<section>
+				<h1>Online Profielen</h1>
+				<ul>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Dennis, 23</h2>
+							<p>Bergschenhoek</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Esther, 18</h2>
+							<p>Oss</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Saske, 21</h2>
+							<p>Nijmegen</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Bas, 24</h2>
+							<p>Berkel</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Rudolf, 21</h2>
+							<p>Tilburg</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Myrthe, 23</h2>
+							<p>Den Bosch</p>
+						</li>
+					</a>
+				</ul>
+			</section>
+			<section>
+				<h1>Alle profielen</h1>
+				<ul>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Dennis, 23</h2>
+							<p>Bergschenhoek</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Esther, 18</h2>
+							<p>Oss</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Saske, 21</h2>
+							<p>Nijmegen</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Bas, 24</h2>
+							<p>Berkel</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Rudolf, 21</h2>
+							<p>Tilburg</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Myrthe, 23</h2>
+							<p>Den Bosch</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Danie, 24</h2>
+							<p>Opmeer</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Karin, 19</h2>
+							<p>Opmeer</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Lisa, 22</h2>
+							<p>Bleiswijk</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Bas, 24</h2>
+							<p>Berkel</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Rudolf, 21</h2>
+							<p>Tilburg</p>
+						</li>
+					</a>
+					<a href="profile.html">
+						<li>
+							<img src="static/images/profileImage.svg" />
+							<h2>Jessica, 19</h2>
+							<p>Waalwijk</p>
+						</li>
+					</a>
+				</ul>
+			</section>
+		</main>
+		<footer></footer>
+	</body>
 </html>

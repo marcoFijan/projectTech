@@ -9,16 +9,14 @@
     <!-- sidebar -->
     <!-- content -->
       <article>
-        <h1>Interesses aanpassen van <%= currentUser.username %>...</h1>
-        <ul>
-          <% for (var i = 0; i < currentUserInterests.length; i++) { %>
-            <li>
-              <h2><%= currentUserInterests[i] %></h2>
-              <!-- <button class="removeInterest">[x] Verwijder interesse</button> -->
-            </li>
+        <h1>Interesses aanpassen van <%= currentUser.username %></h1>
+        <ul class="interestList">
+          <% for (var i = 0; i < currentUser.interests.length; i++) { %>
+              <li>
+                <%= currentUser.interests[i] %>
+              </li>
           <% } %>
         </ul>
-        <input class="addItemBar" list="addItemDataList" type="text" placeholder="Voeg een interesse toe Bijvoorbeeld: 'Playstation' ">
       </article>
       <!-- INCLUDE ASIDE -->
       <%- include('components/footer.ejs') -%>
