@@ -450,6 +450,40 @@ input[name='gender'] {
 	width: 80%;
 }
 
+.slider {
+	border-bottom: none;
+  height: .1em;
+  margin-top: .8em;
+}
+
+.slider:focus{
+  outline: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
+  margin-top: .2em;
+  width: 1.3em;
+  height: 1.3em;
+  padding: 0;
+  background: var(--accentColor);
+  border-radius: 0;
+  border: none;
+}
+
+#ageValue{
+  display: none;
+  color: var(--mainColor);
+  margin-top: -.5em;
+  font-size: .9em;
+  margin-bottom: 2em;
+}
+
+
 .removeInterest {
 	background: #e7313d;
 	background: var(--accentColor);
@@ -521,6 +555,11 @@ footer p {
 
 #notFoundPage article {
 	padding-bottom: 4em;
+}
+
+#notFoundPage p {
+	text-align: center;
+	padding: 1em 4em;
 }
 
 .notFoundImage {

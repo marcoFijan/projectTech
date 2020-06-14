@@ -144,7 +144,7 @@ const updateDatabase = () => {
 }
 
 const edit = (req, res) => {
-	localDB.collection('profiles').updateOne(
+	localDB.collection('profiles').(
 		{
 			_id: mongo.ObjectID(currentUser._id)
 		},
