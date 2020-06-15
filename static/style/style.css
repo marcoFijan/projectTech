@@ -463,6 +463,7 @@ input[name='gender'] {
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
+
 }
 
 .slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
@@ -590,7 +591,6 @@ footer p {
 	}
 
 	#asideButton:checked + .asideLabel {
-		/* margin-left: 19em; */
 		-moz-transform: scale(-1, 1);
 		-webkit-transform: scale(-1, 1);
 		-o-transform: scale(-1, 1);
