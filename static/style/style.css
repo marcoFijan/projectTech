@@ -17,6 +17,7 @@
 
 /* ---------------------------------------------------GENERAL */
 * {
+  color: black;
 	color: var(--fontColor);
 	font-family: 'Roboto', sans-serif;
 	font-weight: 300;
@@ -312,12 +313,6 @@ aside a:hover .profileName {
 	color: var(--mainColor);
 	text-decoration: underline;
 }
-
-/* aside > div:first-child li a {
-	color: #e7313d;
-	color: var(--accentColor);
-	text-decoration: none;
-} */
 
 /* ---------------------------------------------------ASIDERESPONSIVELABEL */
 .asideLabel {
